@@ -1,11 +1,13 @@
-#summary Please share your developing experience here.
+#summary This page is about how to decompile Android dex code into Java source.
 
 = Introduction =
 
-Android developing experience sharing.
+Sometimes we need to decompile dex code into java code.
 
 
 = Details =
+
+
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
