@@ -1,0 +1,21 @@
+#summary Install Eclipse Classic 3.6.2.
+#labels Guide
+
+= Install Eclipse Classic 3.6.2 =
+
+http://www.eclipse.org/downloads/packages/eclipse-classic-362/heliossr2
+
+Obviously you want the version for your operating system:
+
+  * Windows 32-bit
+  * Windows 64-bit
+  * Linux 32-bit
+  * Linux 64-bit
+
+=== Windows ===
+
+The Eclipse download comes as a big ZIP file that you install by extracting the files to your favorite directory, e.g., D:/eclipse.
+
+=== Linux ===
+
+The Eclipse download comes as a big tarball (.gz file) that you install by extracting the files to your favorite directory, e.g., /usr/lib/eclipse.
