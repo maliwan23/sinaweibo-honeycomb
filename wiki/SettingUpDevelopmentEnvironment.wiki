@@ -1,11 +1,11 @@
 #summary Setting Up Your Sina Weibo Development Environment.
-#labels Featured,Phase-Implementation
+#labels Guide,Featured
 
 = Setting Up Your Sina Weibo Development Environment =
 
 No matter which operating system you are using, you will need essentially the same set of tools:
 
-  * Sun's Java Development Kit (JDK)
+  * [JDK6 Sun's Java Development Kit (JDK)]
   * The Eclipse Integrated Development Environment
   * The Android Software Developer's Kit (SDK)
   * A special Eclipse plugin: the Android Developer Tool (ADT)
