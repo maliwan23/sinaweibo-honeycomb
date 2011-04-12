@@ -16,3 +16,5 @@ No matter which operating system you are using, you will need essentially the sa
   * [Subclipse A subversion plugin for Eclipse: Subclipse]
 
   * [SinaWeiboSDK The Sina Weibo Developer's Kit (SDK)]
+
+After setting up the development environment, you can try [DebugSamples debugging the samples from Sina Weibo SDK] to ramp up.
