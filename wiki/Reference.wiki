@@ -1,5 +1,5 @@
 #summary Reference.
-#labels Reference,Guide
+#labels Reference
 
 = Reference =
 
