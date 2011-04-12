@@ -19,9 +19,9 @@ The file you download is a ZIP file on Windows or a tar-zipped file for Linux. E
   * In the graphical UI of the Android SDK and AVD Manager, browse the SDK repository and select new or updated components.
  
   * Select at least following packages before click “Install Selected”:
-      * Android SDK Tools, r10
-      * Android SDK Platform-tools, r3
-      * SDK Platform Android 3.0, API 11, r1
+      * Android SDK Tools, revision 10
+      * Android SDK Platform-tools, revision 3
+      * SDK Platform Android 3.0, API 11, revision 1
 
   * You can also select other packages to download and install. The Android SDK and AVD Manager will install the selected components in your SDK environment. 
 
