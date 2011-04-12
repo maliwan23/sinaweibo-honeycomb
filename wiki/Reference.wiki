@@ -1,5 +1,5 @@
 #summary Reference.
-#labels Reference
+#labels Reference,Featured
 
 = Reference =
 
