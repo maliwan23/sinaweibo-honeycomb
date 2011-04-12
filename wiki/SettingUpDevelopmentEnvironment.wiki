@@ -5,7 +5,7 @@
 
 No matter which operating system you are using, you will need essentially the same set of tools:
 
-  * [JDK6 Sun's Java Development Kit (JDK)]
+  * [JDK Sun's Java Development Kit (JDK)]
   * The Eclipse Integrated Development Environment
   * The Android Software Developer's Kit (SDK)
   * A special Eclipse plugin: the Android Developer Tool (ADT)
