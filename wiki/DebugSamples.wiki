@@ -1,4 +1,4 @@
-#summary Debug samples from Sina Weibo SDK.
+#summary Debug Samples from Sina Weibo SDK.
 #labels Guide
 
 = Debug Samples from Sina Weibo SDK =
