@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/main_window_bg"
+  android:alpha = "0.5"
+  android:id="@+id/weibo_view" android:gravity="center" android:orientation="vertical">
+	<ImageView android:id="@+id/imgSnapshot" android:layout_height="wrap_content" android:layout_width="350dp" android:src="@drawable/icon" android:layout_gravity="center_horizontal"></ImageView>
+    <EditText android:layout_height="100dp" android:text="EditText" android:layout_width="match_parent" android:id="@+id/editText1" android:gravity="top"></EditText>
+    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="match_parent">
+	    <Button android:text="start" android:id="@+id/btnStartVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="pause" android:id="@+id/btnPauseVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="step" android:id="@+id/btnStepVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="resume" android:id="@+id/btnResumeVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="capture" android:id="@+id/btnCaptureVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+    </LinearLayout>
+</LinearLayout>
