@@ -1,10 +1,12 @@
 package com.lenovo.microlog;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -131,6 +133,14 @@ public class WeiboActivity extends Activity {
                 }
             } );
         	
+        	try {
+	    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
+	    	    WeiboFragment f = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
+        	    ft.hide(f);
+	    	    ft.commit();
+        	} catch (Exception ex) {
+        		Log.e(this.toString(), ex.toString());
+        	}
         } catch (Exception ex) {
         	Log.e(this.toString(), ex.toString());
         }
@@ -140,6 +150,27 @@ public class WeiboActivity extends Activity {
         Intent showContent = new Intent(getApplicationContext(),
                 VideoActivity.class);
         startActivity(showContent);
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent msg) {
+        if (keyCode == KeyEvent.KEYCODE_S) {
+        	try {
+	    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
+	    	    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+	    	    WeiboFragment f = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
+	    	    if (f.isHidden()) {
+	    	    	ft.show(f);
+	    	    } else {
+	        	    ft.hide(f);
+	    	    }
+	    	    ft.commit();
+        	} catch (Exception ex) {
+        		Log.e(this.toString(), ex.toString());
+        	}
+            return true;
+        }
+        return super.onKeyDown(keyCode, msg);
     }
 
 }
