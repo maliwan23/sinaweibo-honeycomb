@@ -133,6 +133,16 @@ public class WeiboActivity extends Activity {
                 }
             } );
         	
+        	Button btnExit = (Button) findViewById(R.id.btnExit);
+        	btnExit.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	finish();
+                }
+            } );
+        	
         	try {
 	    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
 	    	    WeiboFragment f = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
