@@ -122,7 +122,8 @@ public class WeiboActivity extends Activity {
 //		                    startActivity(comment);
 		                    
 		                    ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
-		                	img.setImageURI(Uri.parse("/sdcard/snapshot.png"));
+		                    img.setImageBitmap(video.getSnapshot());
+//		                	img.setImageURI(Uri.parse("/sdcard/snapshot.png"));
 		                }
                 	} catch (Exception ex) {
                 		Log.e(this.toString(), ex.toString());

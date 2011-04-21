@@ -21,6 +21,7 @@ public class VideoFragment extends Fragment {
 
     private VideoView viewer = null;
 	MediaMetadataRetriever mmr = null;
+	Bitmap bmp = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,12 +112,17 @@ public class VideoFragment extends Fragment {
 	    	}
 	    	
 			int pos = viewer.getCurrentPosition();
-			Bitmap bmp = mmr.getFrameAtTime(pos * 1000);
+			bmp = mmr.getFrameAtTime(pos * 1000);
 			FileOutputStream out = new FileOutputStream("/sdcard/snapshot.png");
 			bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
 	    } catch (Exception ex) {
 	    	Log.e(this.toString(), ex.toString());
 	    }
+    }
+    
+    public Bitmap getSnapshot()
+    {
+    	return bmp;
     }
 
 }
