@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="1280dp"
+  android:layout_height="800dp"
+  android:orientation="horizontal"
+  android:background="#00000000">
+    <fragment
+        android:name="com.lenovo.microlog.VideoFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:background="#00000000"
+        android:id="@+id/video_fragment">
+    </fragment>
+    <fragment
+        android:name="com.lenovo.microlog.WeiboFragment"
+        android:alpha="0"
+        android:layout_width="350dp"
+        android:layout_height="750dp"
+        android:layout_gravity="right"
+        android:id="@+id/weibo_fragment">
+    </fragment>
+</FrameLayout>

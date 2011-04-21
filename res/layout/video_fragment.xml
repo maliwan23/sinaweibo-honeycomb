@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.lenovo.microlog.VideoFragment"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    android:id="@+id/video_fragment">
+</fragment>

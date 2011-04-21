@@ -14,4 +14,18 @@
         <item name="android:drawablePadding">@dimen/bottom_tab_padding_drawable</item>
         <item name="android:layout_weight">1.0</item>
     </style>
+    
+    <style name="Theme.SinaPanel" parent="android:Theme.Panel">
+		<item name="android:windowAnimationStyle">@android:style/Animation.Toast</item>
+    </style>
+
+    <style name="Theme.SinaDialog" parent="android:Theme.Dialog">
+		<item name="android:windowCloseOnTouchOutside">true</item>
+		<item name="android:windowAnimationStyle">@android:style/Animation.Toast</item>
+    </style>
+
+    <style name="Theme.SinaVideo" parent="android:Theme.NoTitleBar.Fullscreen">
+<!-- 		<item name="android:windowFullscreen">true</item> -->
+    </style>
+
 </resources>
