@@ -37,7 +37,7 @@
 <!-- 		<activity android:name=".WeiboActivity" android:theme="@style/Theme.SinaPanel"> -->
 		<activity android:name=".VideoTestActivity"></activity>
 		<activity android:name=".VideoActivity"></activity>
-		<activity android:name=".WeiboActivity" android:theme="@style/Theme.SinaPanel">
+		<activity android:name=".WeiboActivity" android:theme="@style/Theme.SinaVideo" android:icon="@drawable/weibo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

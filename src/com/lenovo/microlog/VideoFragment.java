@@ -38,17 +38,18 @@ public class VideoFragment extends Fragment {
 			MediaController mediaController = new MediaController(this.getActivity());
 			mediaController.setAnchorView(viewer);
 			
-			Uri video = Uri.parse("/sdcard/transformers.dark.of.the.moon.mp4");
+			String path = getResources().getString(R.string.video_path);
+			Uri video = Uri.parse(path);
 			viewer.setVideoURI(video);
 			
 			viewer.setMediaController(mediaController);
-			viewer.setDrawingCacheEnabled(true);
-			viewer.setDrawingCacheBackgroundColor(0);
+//			viewer.setDrawingCacheEnabled(true);
+//			viewer.setDrawingCacheBackgroundColor(0);
 			viewer.requestFocus();
 //			viewer.start();
 
 			mmr = new MediaMetadataRetriever();
-			mmr.setDataSource("/sdcard/transformers.dark.of.the.moon.mp4");
+			mmr.setDataSource(path);
 	    } catch (Exception ex) {
 	    	Log.e(this.toString(), ex.toString());
 	    }
@@ -93,28 +94,16 @@ public class VideoFragment extends Fragment {
     		return;
     	
 	    try {
-//			Bitmap bmp = viewer.getDrawingCache();
-//			FileOutputStream out = new FileOutputStream("/sdcard/snapshot.png");
-//			bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
-//			
-//			Bitmap bm = Bitmap.createBitmap(viewer.getWidth(), viewer.getHeight(), Bitmap.Config.ARGB_8888);
-//			Canvas c = new Canvas(bm);
-//			viewer.draw(c);
-//			FileOutputStream o = new FileOutputStream("/sdcard/snapshot2.png");
-//			bm.compress(Bitmap.CompressFormat.PNG, 100, o);
-			
-//			MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-//			mmr.setDataSource("/sdcard/transformers.dark.of.the.moon.mp4");
 	    	if (mmr == null)
 	    	{
 				mmr = new MediaMetadataRetriever();
-				mmr.setDataSource("/sdcard/transformers.dark.of.the.moon.mp4");
+				mmr.setDataSource(getResources().getString(R.string.video_path));
 	    	}
 	    	
 			int pos = viewer.getCurrentPosition();
 			bmp = mmr.getFrameAtTime(pos * 1000);
-			FileOutputStream out = new FileOutputStream("/sdcard/snapshot.png");
-			bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
+//			FileOutputStream out = new FileOutputStream("/sdcard/snapshot.png");
+//			bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
 	    } catch (Exception ex) {
 	    	Log.e(this.toString(), ex.toString());
 	    }

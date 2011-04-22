@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -127,13 +128,12 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
 		                } else {
 		                    video.captureVideo();
 		                    
-//		                    Intent comment = new Intent(getApplicationContext(), CommentActivity.class);
-//		                    comment.setData(Uri.parse("/sdcard/snapshot.bmp"));
-//		                    startActivity(comment);
-		                    
 		                    ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
 		                    img.setImageBitmap(video.getSnapshot());
 //		                	img.setImageURI(Uri.parse("/sdcard/snapshot.png"));
+		                    
+		                    EditText comment = (EditText) findViewById(R.id.txtComment);
+		                    comment.setText("Tom.Clancy_s_.H.A.W.X.2.Official.Trailer");
 		                }
                 	} catch (Exception ex) {
                 		Log.e(this.toString(), ex.toString());
@@ -214,7 +214,7 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		Toast.makeText(this, event.toString(), Toast.LENGTH_LONG).show();
+//		Toast.makeText(this, event.toString(), Toast.LENGTH_LONG).show();
 		return mGestureDetector.onTouchEvent(event);
 	}
 
