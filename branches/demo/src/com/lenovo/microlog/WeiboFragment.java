@@ -15,6 +15,13 @@ public class WeiboFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewer = inflater.inflate(R.layout.weibo_view, container, false);
+    	try {
+    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
+    	    ft.hide(this);
+    	    ft.commit();
+    	} catch (Exception ex) {
+    		Log.e(this.toString(), ex.toString());
+    	}
         return viewer;
     }
 
