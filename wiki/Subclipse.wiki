@@ -27,8 +27,8 @@
   * In the Checkout dialog, Select “Create a new repository location” and click “Next”.
 
   * Input this source URL into the location and click “Next”.
-    * For project members, the URL is https://sinaweibo-honeycomb.googlecode.com/svn/trunk/
-    * For non-members, the URL is http://sinaweibo-honeycomb.googlecode.com/svn/trunk/
+    * For project members, the URL for demo project is https://sinaweibo-honeycomb.googlecode.com/svn/branches/demo/
+    * For non-members, the URL for demo project is http://sinaweibo-honeycomb.googlecode.com/svn/branches/demo/
 
   * Input this Uri into the location: https://sinaweibo-honeycomb.googlecode.com/svn/trunk/, and click “Next”.
 
