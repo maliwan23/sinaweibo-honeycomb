@@ -1,24 +1,32 @@
 package com.lenovo.microlog;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-public class WeiboActivity extends Activity {
+public class WeiboActivity extends Activity implements OnTouchListener, OnGestureListener {
 
+	private GestureDetector mGestureDetector;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
         	setContentView(R.layout.weibo_fragment);
-//        	startVideo();
+        	mGestureDetector = new GestureDetector(this);
         	
         	Button btnStartVideo = (Button) findViewById(R.id.btnStartVideo);
         	btnStartVideo.setOnClickListener( new Button.OnClickListener()
@@ -143,14 +151,35 @@ public class WeiboActivity extends Activity {
                 }
             } );
         	
+        	Button btnWeibo = (Button) findViewById(R.id.btnWeibo);
+        	btnWeibo.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	try {
+        	    	    FloatFragment ff = (FloatFragment) getFragmentManager().findFragmentById(R.id.float_fragment);
+        	    	    WeiboFragment wf = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
+        	    	    ff.hide();
+        	    	    wf.show();
+            		} catch (Exception ex) {
+                		Log.e(this.toString(), ex.toString());
+                	}
+                }
+            } );
+        	
         	try {
-	    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
 	    	    WeiboFragment f = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
-        	    ft.hide(f);
-	    	    ft.commit();
+	    	    f.hide();
         	} catch (Exception ex) {
         		Log.e(this.toString(), ex.toString());
         	}
+        	
+        	View touchView = (View) findViewById(R.id.imgSnapshot);
+        	touchView = (View) touchView.getParent();
+        	touchView.setLongClickable(true);
+        	touchView.setOnTouchListener(this);
+
         } catch (Exception ex) {
         	Log.e(this.toString(), ex.toString());
         }
@@ -166,15 +195,15 @@ public class WeiboActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent msg) {
         if (keyCode == KeyEvent.KEYCODE_S) {
         	try {
-	    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
-	    	    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
-	    	    WeiboFragment f = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
-	    	    if (f.isHidden()) {
-	    	    	ft.show(f);
+	    	    FloatFragment ff = (FloatFragment) getFragmentManager().findFragmentById(R.id.float_fragment);
+	    	    WeiboFragment wf = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
+	    	    if (wf.isHidden()) {
+	    	    	ff.hide();
+	    	    	wf.show();
 	    	    } else {
-	        	    ft.hide(f);
+	        	    wf.hide();
+	        	    ff.show();
 	    	    }
-	    	    ft.commit();
         	} catch (Exception ex) {
         		Log.e(this.toString(), ex.toString());
         	}
@@ -182,5 +211,60 @@ public class WeiboActivity extends Activity {
         }
         return super.onKeyDown(keyCode, msg);
     }
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		Toast.makeText(this, event.toString(), Toast.LENGTH_LONG).show();
+		return mGestureDetector.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onDown(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		if (e2.getX() - e1.getX() > 50 && velocityX > 100) {
+        	try {
+	    	    FloatFragment ff = (FloatFragment) getFragmentManager().findFragmentById(R.id.float_fragment);
+	    	    WeiboFragment wf = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
+	    	    if (!wf.isHidden()) {
+	        	    wf.hide();
+	        	    ff.show();
+	    	    }
+        	} catch (Exception ex) {
+        		Log.e(this.toString(), ex.toString());
+        	}
+		}
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
