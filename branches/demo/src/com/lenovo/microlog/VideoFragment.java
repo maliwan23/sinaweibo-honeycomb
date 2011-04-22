@@ -27,6 +27,7 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewer = (VideoView) inflater.inflate(R.layout.video_view, container, false);
         startVideo();
+        viewer.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
         return viewer;
     }
 
