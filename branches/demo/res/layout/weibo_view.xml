@@ -6,7 +6,7 @@
   android:background="@drawable/main_window_bg"
   android:alpha = "0.5"
   android:id="@+id/weibo_view" android:gravity="bottom" android:orientation="vertical">
-	<ImageView android:id="@+id/imgSnapshot" android:layout_width="350dp" android:src="@null" android:layout_gravity="center_horizontal" android:adjustViewBounds="true" android:baselineAlignBottom="true" android:maxHeight="300dp" android:layout_height="wrap_content"></ImageView>
+	<ImageView android:id="@+id/imgSnapshot2" android:layout_width="350dp" android:src="@null" android:layout_gravity="center_horizontal" android:adjustViewBounds="true" android:baselineAlignBottom="true" android:maxHeight="300dp" android:layout_height="wrap_content"></ImageView>
     <EditText android:layout_height="100dp" android:text="Input your comment here..." android:layout_width="match_parent" android:id="@+id/txtComment" android:gravity="top"></EditText>
     <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="match_parent">
 	    <Button android:visibility="gone" android:text="start" android:id="@+id/btnStartVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>

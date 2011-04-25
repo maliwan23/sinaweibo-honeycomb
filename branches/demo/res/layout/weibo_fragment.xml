@@ -29,4 +29,11 @@
         android:layout_gravity="right"
         android:id="@+id/float_fragment">
     </fragment>
+    <ImageView
+    	android:id="@+id/imgSnapshot" 
+    	android:layout_height="fill_parent" 
+    	android:layout_width="fill_parent"
+    	android:layout_marginTop="50dp"
+    	android:layout_marginLeft="10dp"
+    />
 </FrameLayout>
