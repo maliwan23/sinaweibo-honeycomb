@@ -14,6 +14,10 @@
 	    <Button android:visibility="gone" android:text="step" android:id="@+id/btnStepVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
 	    <Button android:visibility="gone" android:text="resume" android:id="@+id/btnResumeVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
 	    <Button android:text="capture" android:id="@+id/btnCaptureVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="cap1" android:id="@+id/btnCaptureVideo1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="cap2" android:id="@+id/btnCaptureVideo2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="cap3" android:id="@+id/btnCaptureVideo3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
+	    <Button android:text="cap bak" android:id="@+id/btnCaptureVideoBak" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
 	    <Button android:text="exit" android:id="@+id/btnExit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
     </LinearLayout>
 </LinearLayout>

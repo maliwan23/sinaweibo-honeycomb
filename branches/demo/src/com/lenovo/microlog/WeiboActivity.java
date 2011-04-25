@@ -13,7 +13,12 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
@@ -122,55 +127,47 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
                 @Override
                 public void onClick( View v )
                 {
-                	try {
-                	    VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
-
-		                if (video == null || !video.isInLayout()) {
-		                    Intent showContent = new Intent(getApplicationContext(), VideoActivity.class);
-		                    startActivity(showContent);
-		                } else {
-		                    video.captureVideo();
-		                    
-//		                    ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
-//		                    img.setImageBitmap(video.getSnapshot());
-//		                	img.setImageURI(Uri.parse("/sdcard/snapshot.png"));
-		                    
-		                    ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
-		                    img.setImageBitmap(video.getSnapshot());
-		                    
-		                    Animation animation = AnimationUtils.loadAnimation(WeiboActivity.this, R.anim.scale_translate_alpha);
-		                    img.startAnimation(animation);
-		                    
-		                    img.setVisibility(View.INVISIBLE);
-		                    
-		                    animation.setAnimationListener(new AnimationListener() {
-								
-								@Override
-								public void onAnimationStart(Animation animation) {
-								}
-								
-								@Override
-								public void onAnimationRepeat(Animation animation) {
-								}
-								
-								@Override
-								public void onAnimationEnd(Animation animation) {
-									VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
-									ImageView img2 = (ImageView) findViewById(R.id.imgSnapshot2);
-					                img2.setImageBitmap(video.getSnapshot());
-								}
-							});
-		                    
-		                    
-		                    
-		                    
-		                    
-		                    EditText comment = (EditText) findViewById(R.id.txtComment);
-		                    comment.setText("Tom.Clancy_s_.H.A.W.X.2.Official.Trailer");
-		                }
-                	} catch (Exception ex) {
-                		Log.e(this.toString(), ex.toString());
-                	}
+                	captureVideo(R.anim.capture_anim);
+                }
+            } );
+        	
+        	Button btnCaptureVideo1 = (Button) findViewById(R.id.btnCaptureVideo1);
+        	btnCaptureVideo1.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	captureVideo(R.anim.capture_anim_1);
+                }
+            } );
+        	
+        	Button btnCaptureVideo2 = (Button) findViewById(R.id.btnCaptureVideo2);
+        	btnCaptureVideo2.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	captureVideo(R.anim.capture_anim_2);
+                }
+            } );
+        	
+        	Button btnCaptureVideo3 = (Button) findViewById(R.id.btnCaptureVideo3);
+        	btnCaptureVideo3.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	captureVideo(R.anim.capture_anim_3);
+                }
+            } );
+        	
+        	Button btnCaptureVideoBak = (Button) findViewById(R.id.btnCaptureVideoBak);
+        	btnCaptureVideoBak.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	captureVideo(R.anim.scale_translate_alpha);
                 }
             } );
         	
@@ -224,6 +221,51 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
         startActivity(showContent);
     }
     
+    private void captureVideo(int animId)
+    {
+    	try {
+    	    VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
+
+            if (video == null || !video.isInLayout()) {
+                Intent showContent = new Intent(getApplicationContext(), VideoActivity.class);
+                startActivity(showContent);
+            } else {
+                video.captureVideo();
+                
+                ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
+                img.setImageBitmap(video.getSnapshot());
+                
+                Animation animation = AnimationUtils.loadAnimation(WeiboActivity.this, animId);
+                img.startAnimation(animation);
+                
+                img.setVisibility(View.INVISIBLE);
+                
+                animation.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
+						ImageView img2 = (ImageView) findViewById(R.id.imgSnapshot2);
+		                img2.setImageBitmap(video.getSnapshot());
+					}
+				});
+
+                EditText comment = (EditText) findViewById(R.id.txtComment);
+                comment.setText("Tom.Clancy_s_.H.A.W.X.2.Official.Trailer");
+            }
+    	} catch (Exception ex) {
+    		Log.e(this.toString(), ex.toString());
+    	}
+    }
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent msg) {
         if (keyCode == KeyEvent.KEYCODE_S) {
@@ -267,6 +309,7 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
 	    	    if (!wf.isHidden()) {
 	        	    wf.hide();
 	        	    ff.show();
+//	        	    ff.alert(true);
 	    	    }
         	} catch (Exception ex) {
         		Log.e(this.toString(), ex.toString());
