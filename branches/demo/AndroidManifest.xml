@@ -3,51 +3,25 @@
       package="com.lenovo.microlog"
       android:versionCode="1"
       android:versionName="1.0">
-<supports-screens android:largeScreens="true" android:anyDensity="true" android:xlargeScreens="true" android:smallScreens="true" android:normalScreens="true"></supports-screens>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-
+      
+	<uses-sdk android:targetSdkVersion="11"></uses-sdk>
+	<supports-screens android:largeScreens="true" android:anyDensity="true" android:xlargeScreens="true" android:smallScreens="true" android:normalScreens="true"></supports-screens>
+	
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+	<uses-permission android:name="android.permission.INTERNET" />
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".SinaMicrolog"
-                  android:label="@string/app_name">
-	        <intent-filter>
-		        <action android:name="android.intent.action.VIEW" />
-		        <category android:name="android.intent.category.DEFAULT" />
-		        <category android:name="android.intent.category.BROWSABLE" />
-		        <data android:scheme="weibo4andriod" android:host="OAuthActivity" /> 
-			</intent-filter>
-        </activity>
-        <activity android:name=".Timelines"></activity>
-        <activity android:name="MainActivity" android:theme="@style/Theme.SinaPanel">
-<!--             <intent-filter> -->
-<!--                 <action android:name="android.intent.action.MAIN" /> -->
-<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
-<!--             </intent-filter> -->
-        </activity>
-<!--         <activity android:name=".FloatPanel"> -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="android.intent.action.MAIN" /> -->
-<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
-<!--             </intent-filter> -->
-<!--         </activity> -->
-		<activity android:name=".TutListActivity" android:theme="@style/Theme.SinaPanel"></activity>
-		<activity android:name=".TutViewerActivity"></activity>
-		<activity android:name=".CommentActivity" android:theme="@style/Theme.SinaDialog"></activity>
-<!-- 		<activity android:name=".VideoActivity" android:theme="@style/Theme.SinaVideo"></activity> -->
-<!-- 		<activity android:name=".WeiboActivity" android:theme="@style/Theme.SinaPanel"> -->
-		<activity android:name=".VideoTestActivity"></activity>
+    
 		<activity android:name=".VideoActivity"></activity>
+		
 		<activity android:name=".WeiboActivity" android:theme="@style/Theme.SinaVideo" android:icon="@drawable/weibo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 		</activity>
-
+		
     </application>
-    
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-sdk android:targetSdkVersion="11"></uses-sdk>
     
 </manifest>
