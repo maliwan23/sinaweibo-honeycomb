@@ -13,6 +13,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -128,9 +131,39 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
 		                } else {
 		                    video.captureVideo();
 		                    
+//		                    ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
+//		                    img.setImageBitmap(video.getSnapshot());
+//		                	img.setImageURI(Uri.parse("/sdcard/snapshot.png"));
+		                    
 		                    ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
 		                    img.setImageBitmap(video.getSnapshot());
-//		                	img.setImageURI(Uri.parse("/sdcard/snapshot.png"));
+		                    
+		                    Animation animation = AnimationUtils.loadAnimation(WeiboActivity.this, R.anim.scale_translate_alpha);
+		                    img.startAnimation(animation);
+		                    
+		                    img.setVisibility(View.INVISIBLE);
+		                    
+		                    animation.setAnimationListener(new AnimationListener() {
+								
+								@Override
+								public void onAnimationStart(Animation animation) {
+								}
+								
+								@Override
+								public void onAnimationRepeat(Animation animation) {
+								}
+								
+								@Override
+								public void onAnimationEnd(Animation animation) {
+									VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
+									ImageView img2 = (ImageView) findViewById(R.id.imgSnapshot2);
+					                img2.setImageBitmap(video.getSnapshot());
+								}
+							});
+		                    
+		                    
+		                    
+		                    
 		                    
 		                    EditText comment = (EditText) findViewById(R.id.txtComment);
 		                    comment.setText("Tom.Clancy_s_.H.A.W.X.2.Official.Trailer");
