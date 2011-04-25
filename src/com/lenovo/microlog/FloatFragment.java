@@ -7,16 +7,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 
 public class FloatFragment extends Fragment {
 	
-    private View view = null;
+    private View mView = null;
+    private boolean mAlert = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	view = inflater.inflate(R.layout.float_view, container, false);
-        return view;
+    	mView = inflater.inflate(R.layout.float_view, container, false);
+        return mView;
     }
 
     public void show()
@@ -41,5 +48,43 @@ public class FloatFragment extends Fragment {
     	} catch (Exception ex) {
     		Log.e(this.toString(), ex.toString());
     	}
+    }
+    
+    private Thread th = null;
+    
+    public void alert(boolean bAlert)
+    {
+    	mAlert = bAlert;
+    	if (!bAlert || mView == null)
+    		return;
+
+//		final Animation anim_out = new AlphaAnimation(1.0f, 0.0f);
+//		anim_out.setDuration(1500);
+		
+		final Animation anim_in = new AlphaAnimation(0.0f, 1.0f);
+		anim_in.setDuration(1500);
+
+		if (th != null) {
+			th.stop();
+		}
+		
+		th = new Thread() {
+			public void run()
+			{
+				while (mAlert)
+				{
+			    	try {
+//			    		mView.startAnimation(anim_out);
+//			    		Thread.sleep(1500);
+			    		mView.startAnimation(anim_in);
+			    		Thread.sleep(1500);
+			    	} catch (Exception ex) {
+			    		Log.e(this.toString(), ex.toString());
+			    	}
+				}
+				mView.setAlpha(1.0f);
+			}
+		};
+		th.start();
     }
 }
