@@ -1,7 +1,9 @@
 package com.lenovo.microlog;
 
+import java.io.File;
 import java.io.FileOutputStream;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 public class VideoFragment extends Fragment {
@@ -26,20 +29,27 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewer = (VideoView) inflater.inflate(R.layout.video_view, container, false);
-        startVideo();
+        startVideo(getResources().getString(R.string.video_path));
         viewer.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
         return viewer;
     }
 
-    public void startVideo() {
+    public void startVideo(String path) {
     	if (viewer == null)
     		return;
     	
 	    try {
+	    	File file = new File(path);
+	    	if (!file.exists()) {
+	    		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+	    		builder.setMessage("Video not exist!");
+	    		builder.show();
+	    		return;
+	    	}
+	    	
 			MediaController mediaController = new MediaController(this.getActivity());
 			mediaController.setAnchorView(viewer);
 			
-			String path = getResources().getString(R.string.video_path);
 			Uri video = Uri.parse(path);
 			viewer.setVideoURI(video);
 			
@@ -47,10 +57,11 @@ public class VideoFragment extends Fragment {
 //			viewer.setDrawingCacheEnabled(true);
 //			viewer.setDrawingCacheBackgroundColor(0);
 			viewer.requestFocus();
-//			viewer.start();
 
 			mmr = new MediaMetadataRetriever();
 			mmr.setDataSource(path);
+			
+			viewer.start();
 	    } catch (Exception ex) {
 	    	Log.e(this.toString(), ex.toString());
 	    }
