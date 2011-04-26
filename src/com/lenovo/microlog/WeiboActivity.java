@@ -270,32 +270,47 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
             } else {
                 video.captureVideo();
                 
-                ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
+                final ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
                 img.setImageBitmap(video.getSnapshot());
                 
-                Animation animation = AnimationUtils.loadAnimation(WeiboActivity.this, animId);
-                img.startAnimation(animation);
+                final Animation animation = AnimationUtils.loadAnimation(WeiboActivity.this, animId);
+                final Animation animation2 = AnimationUtils.loadAnimation(WeiboActivity.this, R.anim.translate);
                 
-                img.setVisibility(View.INVISIBLE);
+                img.startAnimation(animation);
                 
                 animation.setAnimationListener(new AnimationListener() {
 					
-					@Override
 					public void onAnimationStart(Animation animation) {
 					}
 					
-					@Override
 					public void onAnimationRepeat(Animation animation) {
 					}
 					
-					@Override
 					public void onAnimationEnd(Animation animation) {
-						VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
-						ImageView img2 = (ImageView) findViewById(R.id.imgSnapshot2);
-		                img2.setImageBitmap(video.getSnapshot());
+//						
+						img.startAnimation(animation2);
+						animation2.setAnimationListener(new AnimationListener() {
+							
+							public void onAnimationStart(Animation animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							public void onAnimationRepeat(Animation animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							public void onAnimationEnd(Animation animation) {
+								
+								img.setVisibility(View.INVISIBLE);
+								VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
+								ImageView img2 = (ImageView) findViewById(R.id.imgSnapshot2);
+				                img2.setImageBitmap(video.getSnapshot());
+							}
+						});
 					}
 				});
-
                 EditText comment = (EditText) findViewById(R.id.editComment);
                 comment.setText("Tom.Clancy_s_.H.A.W.X.2.Official.Trailer");
             }
