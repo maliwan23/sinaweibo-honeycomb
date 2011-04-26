@@ -5,9 +5,13 @@
   android:layout_height="match_parent"
   android:background="@drawable/main_window_bg"
   android:alpha = "0.5"
-  android:id="@+id/weibo_view" android:gravity="bottom" android:orientation="vertical">
+  android:id="@+id/weibo_view" 
+  android:gravity="bottom" 
+  android:orientation="vertical">
+	<TextView android:id="@+id/txtComment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#FF000000" android:text="Test video link: video:// video:///sdcard/Tom.Clancy_s_.H.A.W.X.2.Official.Trailer.mp4 video://a video://b.mp4 video:///sdcard/transformers.dark.of.the.moon.mp4"></TextView>
+    <Button android:visibility="gone" android:text="Video" android:id="@+id/btnTestVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
 	<ImageView android:id="@+id/imgSnapshot2" android:layout_width="350dp" android:src="@null" android:layout_gravity="center_horizontal" android:adjustViewBounds="true" android:baselineAlignBottom="true" android:maxHeight="300dp" android:layout_height="wrap_content"></ImageView>
-    <EditText android:layout_height="100dp" android:text="Input your comment here..." android:layout_width="match_parent" android:id="@+id/txtComment" android:gravity="top"></EditText>
+    <EditText android:layout_height="100dp" android:text="Input your comment here..." android:layout_width="match_parent" android:id="@+id/editComment" android:gravity="top"></EditText>
     <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="match_parent">
 	    <Button android:visibility="gone" android:text="start" android:id="@+id/btnStartVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>
 	    <Button android:visibility="gone" android:text="pause" android:id="@+id/btnPauseVideo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom"></Button>

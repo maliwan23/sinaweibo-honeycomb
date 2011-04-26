@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -24,6 +25,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class WeiboActivity extends Activity implements OnTouchListener, OnGestureListener {
@@ -50,7 +52,7 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
 		                    Intent showContent = new Intent(getApplicationContext(), VideoActivity.class);
 		                    startActivity(showContent);
 		                } else {
-		                    video.startVideo();
+		                    video.startVideo(getResources().getString(R.string.video_path));
 		                }
                 	} catch (Exception ex) {
                 		Log.e(this.toString(), ex.toString());
@@ -209,11 +211,47 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
         	touchView = (View) touchView.getParent();
         	touchView.setLongClickable(true);
         	touchView.setOnTouchListener(this);
-
+            
+        	Button btnTestVideo = (Button) findViewById(R.id.btnTestVideo);
+        	btnTestVideo.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	try {
+                		Intent video = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("video:///sdcard/transformers.dark.of.the.moon.mp4"));
+                		startActivity(video);
+            		} catch (Exception ex) {
+                		Log.e(this.toString(), ex.toString());
+                	}
+                }
+            } );
         } catch (Exception ex) {
         	Log.e(this.toString(), ex.toString());
         }
     }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+    	super.onNewIntent(intent);
+		String path = intent.getData().getPath();
+//		if (path.matches("video://*")) {
+//			path = path.substring(8);
+//		}
+
+    	try {
+    	    VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
+
+            if (video == null || !video.isInLayout()) {
+                Intent showContent = new Intent(getApplicationContext(), VideoActivity.class);
+                startActivity(showContent);
+            } else {
+                video.startVideo(path);
+            }
+    	} catch (Exception ex) {
+    		Log.e(this.toString(), ex.toString());
+    	}
+}
     
     private void startVideo() {
         Intent showContent = new Intent(getApplicationContext(),
@@ -258,7 +296,7 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
 					}
 				});
 
-                EditText comment = (EditText) findViewById(R.id.txtComment);
+                EditText comment = (EditText) findViewById(R.id.editComment);
                 comment.setText("Tom.Clancy_s_.H.A.W.X.2.Official.Trailer");
             }
     	} catch (Exception ex) {
