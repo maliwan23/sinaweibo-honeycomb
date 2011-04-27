@@ -95,9 +95,22 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 	    		return;
 	    	}
 	    	
-			if (uri.getScheme().matches("weibo4andriod")) {
-				postLogin(uri);
-				video.resumeVideo();
+	    	String scheme = uri.getScheme();
+	    	String host = uri.getHost();
+			if (scheme.matches("weibo4andriod")) {
+				if (host.matches("OAuthActivity")) {
+					postLogin(uri);
+					video.resumeVideo();
+				} else if (host.matches("UpdateHomepage")) {
+		        	RadioGroup rg = (RadioGroup) findViewById(R.id.main_radio);
+		        	if (rg != null)
+		        		rg.check(R.id.radioHomepage);
+
+		        	WeiboHomePage homepage = (WeiboHomePage) getFragmentManager().findFragmentById(R.id.homepage_fragment);
+		    	    if (homepage != null) {
+		    	    	homepage.update();
+		    	    }
+				}
 				return;
 			}
 	    	

@@ -5,11 +5,5 @@
     android:layout_height="fill_parent"
     >
 
-	<TextView 
-		android:text="进行登录授权"
-		android:id="@+id/TextView01" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-	></TextView>
-	<Button android:layout_height="wrap_content" android:text="登录" android:layout_width="wrap_content" android:id="@+id/Button_Load"></Button>
+	<Button android:layout_height="wrap_content" android:text="登录" android:layout_width="wrap_content" android:id="@+id/Button_Load" android:layout_gravity="center"></Button>
 </LinearLayout>
