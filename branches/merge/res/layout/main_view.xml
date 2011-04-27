@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/main_window_bg"
+	android:alpha = "0.5"
+	android:gravity="bottom" 
+	android:orientation="horizontal">
+    <RadioGroup android:gravity="center_vertical" android:layout_gravity="bottom" android:orientation="horizontal" android:id="@+id/main_radio" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <RadioButton android:id="@+id/radioHomepage" android:tag="radio_button2" android:drawableTop="@drawable/homepage_grey" style="@style/main_tab_bottom"/>
+        <RadioButton android:id="@+id/radioAtPage" android:tag="radio_button3" android:drawableTop="@drawable/atpage_grey" style="@style/main_tab_bottom"/>
+        <RadioButton android:id="@+id/radioPostMessage" android:tag="radio_button4" android:drawableTop="@drawable/postmessage_grey" style="@style/main_tab_bottom"/>
+    </RadioGroup>
+</LinearLayout>
