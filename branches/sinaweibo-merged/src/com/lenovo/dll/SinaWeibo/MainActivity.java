@@ -46,36 +46,35 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
                 }
             } );
 
-//        	mGestureDetector = new GestureDetector(this);
-//        	
-//        	Button btnWeibo = (Button) findViewById(R.id.btnWeibo);
-//        	btnWeibo.setOnClickListener( new Button.OnClickListener()
-//            {
-//                @Override
-//                public void onClick( View v )
-//                {
-//                	try {
-//        	    	    FloatIcon fi = (FloatIcon) getFragmentManager().findFragmentById(R.id.float_fragment);
-//        	    	    MainFragment mf = (MainFragment) getFragmentManager().findFragmentById(R.id.main_fragment);
-//        	    	    fi.hide();
-//        	    	    mf.show();
-//            		} catch (Exception ex) {
-//                		Log.e(this.toString(), ex.toString());
-//                	}
-//                }
-//            } );
-//        	
-//        	try {
-//	    	    WeiboFragment f = (WeiboFragment) getFragmentManager().findFragmentById(R.id.weibo_fragment);
-//	    	    f.hide();
-//        	} catch (Exception ex) {
-//        		Log.e(this.toString(), ex.toString());
-//        	}
-//        	
-//        	View touchView = (View) findViewById(R.id.imgSnapshot);
-//        	touchView = (View) touchView.getParent();
-//        	touchView.setLongClickable(true);
-//        	touchView.setOnTouchListener(this);
+        	mGestureDetector = new GestureDetector(this);
+        	
+        	Button btnWeibo = (Button) findViewById(R.id.btnWeibo);
+        	btnWeibo.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	try {
+        	    	    FloatIcon fi = (FloatIcon) getFragmentManager().findFragmentById(R.id.float_fragment);
+        	    	    FloatPanel fp = (FloatPanel) getFragmentManager().findFragmentById(R.id.float_panel);
+        	    	    fi.hide();
+        	    	    fp.show();
+            		} catch (Exception ex) {
+                		Log.e(this.toString(), ex.toString());
+                	}
+                }
+            } );
+        	
+        	try {
+        		FloatPanel f = (FloatPanel) getFragmentManager().findFragmentById(R.id.float_panel);
+	    	    f.hide();
+        	} catch (Exception ex) {
+        		Log.e(this.toString(), ex.toString());
+        	}
+        	
+        	View touchView = (View) findViewById(R.id.float_panel);
+        	touchView.setLongClickable(true);
+        	touchView.setOnTouchListener(this);
         } catch (Exception ex) {
         	Log.e(this.toString(), ex.toString());
         }
@@ -204,9 +203,9 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 		if (e2.getX() - e1.getX() > 50 && velocityX > 100) {
         	try {
 	    	    FloatIcon ff = (FloatIcon) getFragmentManager().findFragmentById(R.id.float_fragment);
-	    	    MainFragment mf = (MainFragment) getFragmentManager().findFragmentById(R.id.main_fragment);
-	    	    if (!mf.isHidden()) {
-	        	    mf.hide();
+	    	    FloatPanel fp = (FloatPanel) getFragmentManager().findFragmentById(R.id.float_panel);
+	    	    if (!fp.isHidden()) {
+	        	    fp.hide();
 	        	    ff.show();
 //	        	    ff.alert(true);
 	    	    }
