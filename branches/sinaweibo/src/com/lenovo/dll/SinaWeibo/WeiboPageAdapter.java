@@ -19,13 +19,17 @@ public class WeiboPageAdapter extends BaseAdapter {
 	private static LayoutInflater inflater = null;
 	public ImageLoader imageLoader;
 	
-    public WeiboPageAdapter(Activity a, List<String> d, List<String> ts, List<String> img) {
+    public WeiboPageAdapter(Activity a ) {
         activity = a;
+
+        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        imageLoader=new ImageLoader(activity.getApplicationContext());
+    }
+    
+    public void setData(List<String> d, List<String> ts, List<String> img){
         profileImageData=d;
         textset = ts;
         middleImageData=img;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader=new ImageLoader(activity.getApplicationContext());
     }
     
     public int getCount() {

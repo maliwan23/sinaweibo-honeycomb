@@ -11,6 +11,7 @@ import weibo4andriod.WeiboException;
 import weibo4andriod.http.ImageItem;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -112,8 +113,8 @@ public class WeiboPostMessage extends Activity {
 				                Toast.makeText(getApplicationContext(), "发表微博成功！",
 				                    Toast.LENGTH_SHORT).show();
 				                
-				                //Intent i = new Intent(mContext, WeiboHomePage.class);
-				                //startActivity(i); 
+				                Intent i = new Intent(mContext, WeiboHomePage.class);
+				                startActivity(i); 
 				          	}
 
 				   		} catch (Exception e) {

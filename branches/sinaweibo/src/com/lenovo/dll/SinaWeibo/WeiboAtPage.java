@@ -58,7 +58,9 @@ public class WeiboAtPage extends Activity{
 			
 			getListData();
 
-			weiboPageAdapter=new WeiboPageAdapter(this, profileImageUrlList, stringMentions, middleImageUrlList);
+			weiboPageAdapter=new WeiboPageAdapter(this);
+			
+			weiboPageAdapter.setData(profileImageUrlList, stringMentions, middleImageUrlList);
 			
 			listview.setAdapter(weiboPageAdapter);
 

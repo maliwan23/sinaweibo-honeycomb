@@ -8,17 +8,22 @@ import weibo4andriod.Status;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class WeiboHomePage extends Activity {
 	
 	private ListView listview;
+	static final int DOWNLOAD_FINISHED = 1;
 
 	private GetTimelineThread getTimelineThread;
 	private WeiboPageAdapter weiboPageAdapter;
-
+	private Context mContext;
 
 	private List<Status> friendsTimeline;
 	private List<String> stringTimeline;
@@ -31,13 +36,12 @@ public class WeiboHomePage extends Activity {
 	private static final String TAG_PIC = "WeiboPic"; 
 	
 	class GetTimelineThread extends Thread {
-		
-		
+	
 		public void run(){
 			try {
 
 			friendsTimeline = weibo.getFriendsTimeline();
-						
+					
 			} catch (WeiboException e){
 				e.printStackTrace();
 			} finally {
@@ -47,7 +51,7 @@ public class WeiboHomePage extends Activity {
 	}
 	
 	
-	private void getListData(){
+	private void processRecievedData(){
 
 		StringBuilder stringBuilder = new StringBuilder("1");
 		
@@ -74,34 +78,39 @@ public class WeiboHomePage extends Activity {
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    	setContentView(R.layout.loading_picture);
+    	mContext=getApplicationContext();
+        
 		stringTimeline = new ArrayList<String>();
 		profileImageUrlList = new ArrayList<String>();
 		middleImageUrlList = new ArrayList<String>();
     
-        getTimelineThread = new GetTimelineThread();
+		getTimelineThread = new GetTimelineThread();
         
         weibo = OAuthConstant.getInstance().getWeibo();
         weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
         
 		sem_timeline = new Semaphore(1);
+		
+		weiboPageAdapter=new WeiboPageAdapter(this);
+
+        Log.d(TAG, "imageview should appear here.");
         
         try{
 			sem_timeline.acquire();
 			getTimelineThread.start();
         } catch (Exception e){
 			e.printStackTrace();
-		}
+		}	
 
-		
-		listview = new ListView(this);
+		listview = new ListView(mContext);
 		
 		try {
 			sem_timeline.acquire();
 			
-			getListData();
+			processRecievedData();
 			
-			weiboPageAdapter=new WeiboPageAdapter(this, profileImageUrlList, stringTimeline, middleImageUrlList);
-			
+			weiboPageAdapter.setData(profileImageUrlList, stringTimeline, middleImageUrlList);
 			listview.setAdapter(weiboPageAdapter);
 
 			setContentView(listview);
@@ -111,6 +120,9 @@ public class WeiboHomePage extends Activity {
 		} finally {
 			sem_timeline.release();
 		}
+		Log.d(TAG_PIC, "The UI layout was reset.\n");
     }
+
+
  
 }
