@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
   android:orientation="horizontal"
-  android:background="#00000000">
+  android:background="@drawable/transparent">
     <fragment
         android:name="com.lenovo.dll.SinaWeibo.MainFragment"
         android:alpha="0"
-        android:layout_width="350dp"
-        android:layout_height="750dp"
-        android:layout_gravity="right"
-        android:visibility="gone"
+        android:layout_width="319dp"
+        android:layout_height="700dp"
+        android:layout_gravity="bottom"
         android:id="@+id/main_fragment">
     </fragment>
     <fragment
         android:name="com.lenovo.dll.SinaWeibo.WeiboHomePage"
         android:alpha="0"
-        android:layout_width="350dp"
-        android:layout_height="700dp"
-        android:layout_gravity="right"
+        android:layout_width="283dp"
+        android:layout_height="470dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="12dp"
+        android:background="@drawable/list_bg"
         android:id="@+id/homepage_fragment">
     </fragment>
     <fragment
         android:name="com.lenovo.dll.SinaWeibo.WeiboAtPage"
         android:alpha="0"
-        android:layout_width="350dp"
-        android:layout_height="700dp"
-        android:layout_gravity="right"
+        android:layout_width="283dp"
+        android:layout_height="470dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="12dp"
+        android:background="@drawable/list_bg"
         android:id="@+id/atpage_fragment">
     </fragment>
     <fragment
         android:name="com.lenovo.dll.SinaWeibo.WeiboPostMessage"
         android:alpha="0"
-        android:layout_width="350dp"
-        android:layout_height="700dp"
-        android:layout_gravity="right"
+        android:layout_width="283dp"
+        android:layout_height="470dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="12dp"
         android:id="@+id/post_fragment">
     </fragment>
     <fragment
         android:name="com.lenovo.dll.SinaWeibo.OAuthFragment"
         android:alpha="0"
-        android:layout_width="300dp"
-        android:layout_height="600dp"
-        android:layout_gravity="right"
+        android:layout_width="283dp"
+        android:layout_height="470dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="12dp"
         android:id="@+id/oauth_fragment">
     </fragment>
 </FrameLayout>

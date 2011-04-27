@@ -2,15 +2,19 @@
 <resources>
      <style name="main_tab_bottom"> 
          <item name="android:gravity">center_horizontal</item> 
-         <item name="android:layout_width">wrap_content</item> 
-         <item name="android:layout_height">wrap_content</item> 
          <item name="android:button">@null</item> 
          <item name="android:singleLine">true</item> 
-         <item name="android:drawablePadding">10dp</item> 
+         <item name="android:drawablePadding">10dp</item>
          <item name="android:layout_weight">1.0</item> 
      </style> 
+
+    <style name="SinaListStyle" parent="android:Widget.ListView.DropDown">
+        <item name="android:background">#66FFFFFF</item>
+        <item name="android:childDivider">#FF666666</item>
+    </style>
     
     <style name="Theme.SinaVideo" parent="android:Theme.NoTitleBar.Fullscreen">
+    	<item name="android:listViewStyle">@style/SinaListStyle</item>
     </style>
 
 </resources>

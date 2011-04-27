@@ -1,9 +1,11 @@
 package com.lenovo.dll.SinaWeibo;
 
 import java.util.List;
-
+import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +65,7 @@ public class WeiboPageAdapter extends BaseAdapter {
         else
             holder=(ViewHolder)vi.getTag();
         
-        holder.text.setText(textset.get(position));
+        holder.text.setText(Html.fromHtml(textset.get(position)));
         holder.profileImage.setTag(profileImageData.get(position));
         holder.middleImage.setTag(middleImageData.get(position));
         imageLoader.DisplayImage(profileImageData.get(position), activity, holder.profileImage);
@@ -74,6 +76,8 @@ public class WeiboPageAdapter extends BaseAdapter {
         }
     	imageLoader.DisplayImage(middleImageData.get(position), activity, holder.middleImage);	
     	
+        Pattern pattern = Pattern.compile("video://\\S+");
+        Linkify.addLinks(holder.text, pattern, "video://");
     	
         return vi;
     }
