@@ -8,6 +8,14 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/editbox_background"/>
     <Button
+        android:id="@+id/btnCaptureVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entry"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="50dip"
+        android:text="截屏" />
+    <Button
         android:id="@+id/ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,5 +23,14 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
         android:text="发布" />
+	<ImageView android:id="@+id/imgSnapshot2" 
+		android:layout_width="350dp" 
+		android:src="@null" 
+        android:layout_below="@id/ok"
+		android:layout_gravity="center_horizontal" 
+		android:adjustViewBounds="true" 
+		android:baselineAlignBottom="true" 
+		android:maxHeight="300dp" 
+		android:layout_height="wrap_content"/>
 
 </RelativeLayout>
