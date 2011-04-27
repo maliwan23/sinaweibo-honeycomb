@@ -5,7 +5,6 @@ import java.util.concurrent.Semaphore;
 import weibo4andriod.WeiboException;
 import weibo4andriod.http.AccessToken;
 import weibo4andriod.http.RequestToken;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +16,12 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -30,6 +35,16 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
         try {
         	setContentView(R.layout.main_fragment);
         	setEnabled(false);
+
+        	Button btnCaptureVideo = (Button) findViewById(R.id.btnCaptureVideo);
+        	btnCaptureVideo.setOnClickListener( new Button.OnClickListener()
+            {
+                @Override
+                public void onClick( View v )
+                {
+                	captureVideo();
+                }
+            } );
 
 //        	mGestureDetector = new GestureDetector(this);
 //        	
@@ -93,46 +108,62 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
     	} catch (Exception ex) {
     		Log.e(this.toString(), ex.toString());
     	}
-}
+    }
     
-//    private void captureVideo(int animId)
-//    {
-//    	try {
-//    	    VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
-//
-//            if (video != null) {
-//                video.captureVideo();
-//                
-//                ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
-//                img.setImageBitmap(video.getSnapshot());
-//                
-//                Animation animation = AnimationUtils.loadAnimation(MainActivity.this, animId);
-//                img.startAnimation(animation);
-//                
-//                img.setVisibility(View.INVISIBLE);
-//                
-//                animation.setAnimationListener(new AnimationListener() {
-//					
-//					@Override
-//					public void onAnimationStart(Animation animation) {
-//					}
-//					
-//					@Override
-//					public void onAnimationRepeat(Animation animation) {
-//					}
-//					
-//					@Override
-//					public void onAnimationEnd(Animation animation) {
-//						VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
-//						ImageView img2 = (ImageView) findViewById(R.id.imgSnapshot2);
-//		                img2.setImageBitmap(video.getSnapshot());
-//					}
-//				});
-//            }
-//    	} catch (Exception ex) {
-//    		Log.e(this.toString(), ex.toString());
-//    	}
-//    }
+    private void captureVideo()
+    {
+    	try {
+    	    VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
+
+            if (video != null) {
+                video.captureVideo();
+                
+                final ImageView img = (ImageView) findViewById(R.id.imgSnapshot);
+                img.setImageBitmap(video.getSnapshot());
+                
+                final Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale);
+                final Animation animation2 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.translate);
+                
+                img.startAnimation(animation);
+                
+                animation.setAnimationListener(new AnimationListener() {
+					
+					public void onAnimationStart(Animation animation) {
+					}
+					
+					public void onAnimationRepeat(Animation animation) {
+					}
+					
+					public void onAnimationEnd(Animation animation) {
+//						
+						img.startAnimation(animation2);
+						animation2.setAnimationListener(new AnimationListener() {
+							
+							public void onAnimationStart(Animation animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							public void onAnimationRepeat(Animation animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							public void onAnimationEnd(Animation animation) {
+								
+								img.setVisibility(View.INVISIBLE);
+								VideoFragment video = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment);
+								ImageView img2 = (ImageView) findViewById(R.id.imgSnapshot2);
+				                img2.setImageBitmap(video.getSnapshot());
+							}
+						});
+					}
+				});
+            }
+    	} catch (Exception ex) {
+    		Log.e(this.toString(), ex.toString());
+    	}
+    }
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent msg) {
