@@ -58,7 +58,7 @@ public class WeiboHomePage extends Fragment {
 		
 		for (Status status : friendsTimeline) {
 			stringBuilder.setLength(0);
-			stringBuilder.append(status.getUser().getScreenName() + "说:"
+			stringBuilder.append("<font color='#CC0000'>" + status.getUser().getScreenName() + ": </font>"
 					+ status.getText() + "\n");
 			Log.d(TAG_PIC, status.getBmiddle_pic().toString());
 			stringTimeline.add(stringBuilder.toString());

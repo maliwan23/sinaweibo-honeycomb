@@ -1,6 +1,8 @@
 package com.lenovo.dll.SinaWeibo;
 
 import java.io.File;
+import java.io.FileOutputStream;
+
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
@@ -84,8 +86,8 @@ public class VideoFragment extends Fragment {
 	    	
 			int pos = viewer.getCurrentPosition();
 			bmp = mmr.getFrameAtTime(pos * 1000);
-//			FileOutputStream out = new FileOutputStream("/sdcard/snapshot.png");
-//			bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
+			FileOutputStream out = new FileOutputStream("/sdcard/snapshot.png");
+			bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
 	    } catch (Exception ex) {
 	    	Log.e(this.toString(), ex.toString());
 	    }

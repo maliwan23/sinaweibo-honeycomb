@@ -27,6 +27,7 @@ public class WeiboPostMessage extends Fragment {
 	private Status status;
 	private static final String TAG = "weibo";
 	private String UrlString;
+	private String inputContent;
 	
 	private Semaphore sem_postmessage;
 	private PostPrivateMessageThread postmsgthrd;
@@ -63,7 +64,8 @@ public class WeiboPostMessage extends Fragment {
 				{
 				    try {
 
-				    	    text.getText().toString();
+				    	    inputContent = text.getText().toString();
+				    	    
 				          	weibo = OAuthConstant.getInstance().getWeibo();
 
 				          	try {
@@ -84,7 +86,7 @@ public class WeiboPostMessage extends Fragment {
 				          	if ( status.getText() != null && !status.getText().equals("") )
 				          	{
 				                // When clicked, show a toast with the TextView text
-				                Toast.makeText(view.getContext(), "�?�表微�?��?功�?",
+				                Toast.makeText(view.getContext(), "发表微博成功",
 				                    Toast.LENGTH_SHORT).show();
 				                
 				                //Intent i = new Intent(mContext, WeiboHomePage.class);
@@ -106,14 +108,14 @@ public class WeiboPostMessage extends Fragment {
 
 	public void ImageGenerated() {
 		try {
-	        byte[] content= readFileImage("/sdcard/images/1.jpg");
+	        byte[] content= readFileImage("/sdcard/snapshot.png");
 	        
 			if(content.length <= 0){
 				System.out.println("Image file is null");
 			}
 	        
 	        picture=new ImageItem("pic",content);
-	        UrlString =java.net.URLEncoder.encode("�?�说upload会失败？","UTF-8");
+	        UrlString =java.net.URLEncoder.encode(inputContent,"UTF-8");
 		} catch (IOException e){
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -127,6 +129,8 @@ public class WeiboPostMessage extends Fragment {
 			try {
 	          	status = weibo.uploadStatus(UrlString, picture);		
 			} catch (WeiboException e){
+				e.printStackTrace();
+			} catch (Exception e){
 				e.printStackTrace();
 			}finally {
 				sem_postmessage.release();
@@ -143,7 +147,7 @@ public class WeiboPostMessage extends Fragment {
 		int r=bufferedInputStream.read(bytes);
 		if(len !=r){
 			bytes=null;
-			throw new IOException("读�?�文件�?正确");
+			throw new IOException("读�?�文件�?正确");
 		}
 		bufferedInputStream.close();
 		return bytes;

@@ -81,7 +81,7 @@ public class WeiboAtPage extends Fragment {
 		
 		for (Status status : mentions) {
 			stringBuilder.setLength(0);
-			stringBuilder.append(status.getUser().getScreenName() + "说:"
+			stringBuilder.append("<font color='#CC0000'>" + status.getUser().getScreenName() + ": </font>"
 					+ status.getText() + "\n");
 			stringMentions.add(stringBuilder.toString());
 			Log.d(TAG, stringBuilder.toString());
@@ -106,6 +106,8 @@ public class WeiboAtPage extends Fragment {
 			mentions = weibo.getMentions();
 						
 			} catch (WeiboException e){
+				e.printStackTrace();
+			} catch (Exception e){
 				e.printStackTrace();
 			} finally {
 				sem_mentions.release();
