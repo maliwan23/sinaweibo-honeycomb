@@ -10,6 +10,8 @@ import weibo4andriod.WeiboException;
 import weibo4andriod.http.ImageItem;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,8 +46,6 @@ public class WeiboPostMessage extends Fragment {
 		text = (EditText) view.findViewById(R.id.entry);
 		
 		button = (Button) view.findViewById(R.id.ok);
-		
-        postmsgthrd = new PostPrivateMessageThread();
         
 		sem_postmessage = new Semaphore(1);
 		
@@ -73,6 +73,7 @@ public class WeiboPostMessage extends Fragment {
 								
 								ImageGenerated();
 								
+						        postmsgthrd = new PostPrivateMessageThread();
 								postmsgthrd.start();
 				          	} catch (Exception e) {
 								e.printStackTrace();
@@ -89,8 +90,9 @@ public class WeiboPostMessage extends Fragment {
 				                Toast.makeText(view.getContext(), "发表微博成功",
 				                    Toast.LENGTH_SHORT).show();
 				                
-				                //Intent i = new Intent(mContext, WeiboHomePage.class);
-				                //startActivity(i); 
+				                Intent i = new Intent(view.getContext(), MainActivity.class);
+				                i.setData(Uri.parse("weibo4andriod://UpdateHomepage"));
+				                startActivity(i);
 				          	}
 
 				   		} catch (Exception e) {
