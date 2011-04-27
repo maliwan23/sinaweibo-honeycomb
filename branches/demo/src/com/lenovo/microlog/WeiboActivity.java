@@ -129,7 +129,7 @@ public class WeiboActivity extends Activity implements OnTouchListener, OnGestur
                 @Override
                 public void onClick( View v )
                 {
-                	captureVideo(R.anim.capture_anim);
+                	captureVideo(R.anim.scale);
                 }
             } );
         	
