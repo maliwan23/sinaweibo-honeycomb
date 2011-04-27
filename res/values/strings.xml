@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World!</string>
+    <string name="app_name">电视微博</string>
+    <string name="buttonname">OK</string>
+	<string name="video_path">/sdcard/Tom.Clancy_s_.H.A.W.X.2.Official.Trailer.mp4</string>
+</resources>
