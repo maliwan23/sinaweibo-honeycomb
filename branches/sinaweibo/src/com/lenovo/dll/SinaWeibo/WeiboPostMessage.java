@@ -11,29 +11,35 @@ import weibo4andriod.WeiboException;
 import weibo4andriod.http.ImageItem;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class WeiboPostMessage extends Activity {
 	
 	private EditText text;
-	private Button button;
+	private Button okay_button;
+	private Button captured_button;
 	private Status status;
 	private static final String TAG = "weibo";
 	private String inputContent;
 	private Context mContext;
 	private String UrlString;
+	private Boolean captureclicked=false;
 	
 	private Semaphore sem_postmessage;
 	private PostPrivateMessageThread postmsgthrd;
 	
 	private Weibo weibo;
 	private ImageItem picture;
+	private ImageView captured_image;
+	
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +47,34 @@ public class WeiboPostMessage extends Activity {
 		
 		text = (EditText) findViewById(R.id.entry);
 		
-		button = (Button)this.findViewById(R.id.ok);
-		
+		okay_button = (Button)this.findViewById(R.id.okbutton);
+		captured_button = (Button)this.findViewById(R.id.capturedbutton);
         postmsgthrd = new PostPrivateMessageThread();
+        captured_image = new ImageView(this);
+		captured_image = (ImageView)this.findViewById(R.id.capturedimage);
+		captured_image.setVisibility(View.GONE);
         
 		sem_postmessage = new Semaphore(1);
 		
-		
-        button.setOnClickListener(new OnClickListener(){
+		captured_button.setOnClickListener(new OnClickListener(){
+			
+			public void onClick(View v){
+				mContext = getApplicationContext();
+				captureclicked = true;
+
+				try {
+				Drawable dw = Drawable.createFromPath("/sdcard/Pictures/1.jpg");
+				captured_image.setImageDrawable(dw);
+				captured_image.setVisibility(View.VISIBLE);
+				//setContentView(R.layout.postmessage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+	
+        okay_button.setOnClickListener(new OnClickListener(){
 			
 			public void onClick(View v) {
 				
@@ -102,17 +128,14 @@ public class WeiboPostMessage extends Activity {
         });
 
 	}
-
+	
 	public void ImageGenerated() {
 		try {
-	        byte[] content= readFileImage("/sdcard/images/1.jpg");
-	        
-			if(content.length <= 0){
-				System.out.println("Image file is null");
-			}
-	        
+			
+	        byte[] content= readFileImage("/sdcard/Pictures/1.jpg");
+       
 	        picture=new ImageItem("pic",content);
-	        UrlString =java.net.URLEncoder.encode("听说upload会失败？","UTF-8");
+	        UrlString =java.net.URLEncoder.encode(inputContent,"UTF-8");
 		} catch (IOException e){
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -135,11 +158,15 @@ public class WeiboPostMessage extends Activity {
 	}
 
 	public static byte[] readFileImage(String filename)throws IOException {
+		
 		BufferedInputStream bufferedInputStream=new BufferedInputStream(
 				new FileInputStream(filename));
+		
 		int len =bufferedInputStream.available();
 		byte[] bytes=new byte[len];
+		
 		int r=bufferedInputStream.read(bytes);
+		
 		if(len !=r){
 			bytes=null;
 			throw new IOException("读取文件不正确");
