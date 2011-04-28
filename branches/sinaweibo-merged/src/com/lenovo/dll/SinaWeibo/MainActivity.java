@@ -1,5 +1,6 @@
 package com.lenovo.dll.SinaWeibo;
 
+import java.net.URL;
 import java.util.concurrent.Semaphore;
 
 import com.lenovo.dll.SinaWeibo.WeiboHomePage.GetTimelineThread;
@@ -396,13 +397,15 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 			TextView txtUserInfo = (TextView) findViewById(R.id.txtUserInfo);
 			if (txtUserInfo != null)
 				txtUserInfo.setText(String.format("关注 %d　　粉丝 %d　　微博%d", 
-						user.getFollowersCount(), 
 						user.getFriendsCount(),
+						user.getFollowersCount(), 
 						user.getStatusesCount()));
 			
 			ImageView imgAvator = (ImageView) findViewById(R.id.imgAvator);
-			if (imgAvator != null && user.getProfileImageURL() != null) {
-				imageLoader.DisplayImage(user.getProfileImageURL().toString(), this, imgAvator);
+			URL url = user.getProfileImageURL();
+			if (imgAvator != null && url != null) {
+				imgAvator.setTag(url.toString());
+				imageLoader.DisplayImage(url.toString(), this, imgAvator);
 			}
 
 		} catch (Exception e) {

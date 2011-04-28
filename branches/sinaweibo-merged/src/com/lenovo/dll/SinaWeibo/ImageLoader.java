@@ -72,9 +72,9 @@ public class ImageLoader {
             imageView.setImageBitmap(cache.get(url));
         else
         {
-        // queue the request and show a default icon till remote down process finished.
-            queuePhoto(url, activity, imageView);
+        	// queue the request and show a default icon till remote down process finished.
             imageView.setImageResource(stub_id);
+            queuePhoto(url, activity, imageView);
         }    
     }
     
