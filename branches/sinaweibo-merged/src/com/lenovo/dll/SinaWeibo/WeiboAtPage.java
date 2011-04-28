@@ -2,13 +2,18 @@ package com.lenovo.dll.SinaWeibo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import com.lenovo.dll.SinaWeibo.WeiboHomePage.UpdateTask;
 
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +38,10 @@ public class WeiboAtPage extends Fragment {
 	private Weibo weibo;
 	private static final String TAG="Weibo";
 	
+    Timer mTimer;
+    TimerTask mTimerTask;
+	UpdateTask mUpdateTask = new UpdateTask();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View view = inflater.inflate(R.layout.list_fragment, container, false);
@@ -122,8 +131,21 @@ public class WeiboAtPage extends Fragment {
     	    FragmentTransaction ft = getFragmentManager().beginTransaction();
     	    ft.show(this);
     	    ft.commit();
-    	    if (listview.getChildCount() == 0)
-    	    	update();
+    	    
+    	    if (mTimer == null) {
+	    	    mTimer = new Timer(true);
+            	mTimerTask = new TimerTask()
+	        	{
+	        		public void run()
+	        		{
+	        			updateAsync();
+	        		}        
+	        	};
+	        	mTimer.schedule(mTimerTask, 100, 60000);
+    	    }
+
+//    	    if (listview.getChildCount() == 0)
+//    	    	update();
     	} catch (Exception ex) {
     		Log.e(this.toString(), ex.toString());
     	}
@@ -138,5 +160,56 @@ public class WeiboAtPage extends Fragment {
     	} catch (Exception ex) {
     		Log.e(this.toString(), ex.toString());
     	}
+    }
+
+    class UpdateTask extends AsyncTask<Void, Void, Boolean> {
+    	
+    	@Override
+		protected Boolean doInBackground(Void... params) {
+    		
+    		try {
+    			stringMentions = new ArrayList<String>();
+    			profileImageUrlList = new ArrayList<String>();
+    			middleImageUrlList = new ArrayList<String>();
+
+    	        weibo = OAuthConstant.getInstance().getWeibo();
+    	        weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
+    	        
+    			mentions = weibo.getMentions();
+
+    			getListData();
+    				
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    			return false;
+    		}
+			return true;
+		}
+    	
+    	@Override
+    	protected void onPostExecute(final Boolean success) {
+    		if (success)
+    			updateUIList();
+    		mUpdateTask = new UpdateTask();
+    	}
+    }
+    
+    private void updateAsync()
+    {
+    	try {
+	    	mUpdateTask.execute();
+    	} catch (Exception e) {
+    		Log.e("updateAsync", e.toString());
+    	}
+    }
+    
+    private void updateUIList()
+    {
+    	try {
+			weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
+			listview.setAdapter(weiboPageAdapter);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 }
