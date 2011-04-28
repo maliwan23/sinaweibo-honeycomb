@@ -3,6 +3,7 @@ package com.lenovo.dll.SinaWeibo;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.concurrent.Semaphore;
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
@@ -58,13 +59,14 @@ public class WeiboPostMessage extends Fragment {
 				
 				if (text.getText().length() == 0)
 				{
-					Toast.makeText(view.getContext(), "您还没有输入任何内容", Toast.LENGTH_SHORT).show();
+					Toast.makeText(view.getContext(), "Please type something new.", Toast.LENGTH_SHORT).show();
 				} 
 				else 
 				{
 				    try {
 
 				    	    inputContent = text.getText().toString();
+				    	    inputContent += " " + VideoFragment.videoPath;
 				    	    
 				          	weibo = OAuthConstant.getInstance().getWeibo();
 
@@ -87,7 +89,7 @@ public class WeiboPostMessage extends Fragment {
 				          	if ( status.getText() != null && !status.getText().equals("") )
 				          	{
 				                // When clicked, show a toast with the TextView text
-				                Toast.makeText(view.getContext(), "发表微博成功",
+				                Toast.makeText(view.getContext(), "Post message successfully.",
 				                    Toast.LENGTH_SHORT).show();
 				                
 				                Intent i = new Intent(view.getContext(), MainActivity.class);
@@ -117,7 +119,7 @@ public class WeiboPostMessage extends Fragment {
 			}
 	        
 	        picture=new ImageItem("pic",content);
-	        UrlString =java.net.URLEncoder.encode(inputContent,"UTF-8");
+	        UrlString = URLEncoder.encode(inputContent,"UTF-8");
 		} catch (IOException e){
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -149,7 +151,7 @@ public class WeiboPostMessage extends Fragment {
 		int r=bufferedInputStream.read(bytes);
 		if(len !=r){
 			bytes=null;
-			throw new IOException("读�?�文件�?正确");
+			throw new IOException("The file you access is not Existed.");
 		}
 		bufferedInputStream.close();
 		return bytes;

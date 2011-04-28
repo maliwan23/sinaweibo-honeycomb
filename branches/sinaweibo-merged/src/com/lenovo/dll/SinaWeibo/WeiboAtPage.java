@@ -35,9 +35,10 @@ public class WeiboAtPage extends Fragment {
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		listview = new ListView(this.getActivity());
-		hide();
-		return listview;
+    	View view = inflater.inflate(R.layout.list_fragment, container, false);
+    	listview = (ListView) view.findViewById(R.id.lstView);
+    	hide();
+    	return view;
     }
         
     public void update() {
