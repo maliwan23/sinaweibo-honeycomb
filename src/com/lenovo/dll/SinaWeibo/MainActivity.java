@@ -2,6 +2,10 @@ package com.lenovo.dll.SinaWeibo;
 
 import java.util.concurrent.Semaphore;
 
+import com.lenovo.dll.SinaWeibo.WeiboHomePage.GetTimelineThread;
+
+import weibo4andriod.User;
+import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
 import weibo4andriod.http.AccessToken;
 import weibo4andriod.http.RequestToken;
@@ -24,10 +28,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener, OnGestureListener {
 
 	private GestureDetector mGestureDetector;
+	private ImageLoader imageLoader;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,8 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
         try {
         	setContentView(R.layout.main_fragment);
         	setEnabled(false);
+        	
+        	imageLoader = new ImageLoader(this.getApplicationContext());
 
         	Button btnCaptureVideo = (Button) findViewById(R.id.btnCaptureVideo);
         	btnCaptureVideo.setOnClickListener( new Button.OnClickListener()
@@ -287,6 +295,8 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 		try {
 			sem_http.acquire();
 			
+			updateUserInfo();
+			
     	    OAuthFragment of = (OAuthFragment) getFragmentManager().findFragmentById(R.id.oauth_fragment);
     	    if (!of.isHidden()) {
         	    of.hide();
@@ -352,6 +362,68 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 				e.printStackTrace();
 			} finally {
 				sem_http.release();
+			}
+		}
+	}
+	
+	private GetUserInfoThread getUserInfoThread;
+	private Semaphore sem_user;
+	private User user;
+	
+	private void updateUserInfo() {
+        getUserInfoThread = new GetUserInfoThread();
+        
+		sem_user = new Semaphore(1);
+        
+        try{
+        	sem_user.acquire();
+			getUserInfoThread.start();
+        } catch (Exception e){
+			e.printStackTrace();
+		}
+
+		try {
+			sem_user.acquire();
+			
+			TextView txtUserName = (TextView) findViewById(R.id.txtUserName);
+			if (txtUserName != null)
+				txtUserName.setText(user.getScreenName());
+			
+			TextView txtUserStatus = (TextView) findViewById(R.id.txtUserStatus);
+			if (txtUserStatus != null)
+				txtUserStatus.setText(user.getDescription());
+			
+			TextView txtUserInfo = (TextView) findViewById(R.id.txtUserInfo);
+			if (txtUserInfo != null)
+				txtUserInfo.setText(String.format("关注 %d　　粉丝 %d　　微博%d", 
+						user.getFollowersCount(), 
+						user.getFriendsCount(),
+						user.getStatusesCount()));
+			
+			ImageView imgAvator = (ImageView) findViewById(R.id.imgAvator);
+			if (imgAvator != null && user.getProfileImageURL() != null) {
+				imageLoader.DisplayImage(user.getProfileImageURL().toString(), this, imgAvator);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sem_user.release();
+		}
+	}
+	
+	class GetUserInfoThread extends Thread {
+		public void run(){
+			try {
+		        Weibo weibo = OAuthConstant.getInstance().getWeibo();
+		        weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
+				user = weibo.verifyCredentials();
+			} catch (WeiboException e){
+				e.printStackTrace();
+			} catch (Exception e){
+				e.printStackTrace();
+			} finally {
+				sem_user.release();
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.lenovo.dll.SinaWeibo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import android.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 public class VideoFragment extends Fragment {
@@ -20,6 +22,7 @@ public class VideoFragment extends Fragment {
     private VideoView viewer = null;
 	MediaMetadataRetriever mmr = null;
 	Bitmap bmp = null;
+	public static String videoPath = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,9 +39,7 @@ public class VideoFragment extends Fragment {
 	    try {
 	    	File file = new File(path);
 	    	if (!file.exists()) {
-//	    		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-//	    		builder.setMessage("Video not exist!");
-//	    		builder.show();
+	    		Toast.makeText(viewer.getContext(), "Video not exist!", Toast.LENGTH_LONG);
 	    		return;
 	    	}
 	    	
@@ -57,6 +58,7 @@ public class VideoFragment extends Fragment {
 			mmr.setDataSource(path);
 			
 			viewer.start();
+			videoPath = "video://" + path;
 	    } catch (Exception ex) {
 	    	Log.e(this.toString(), ex.toString());
 	    }
@@ -86,8 +88,19 @@ public class VideoFragment extends Fragment {
 	    	
 			int pos = viewer.getCurrentPosition();
 			bmp = mmr.getFrameAtTime(pos * 1000);
-			FileOutputStream out = new FileOutputStream("/sdcard/snapshot.png");
-			bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
+			
+			Thread th = new Thread() {
+				public void run() {
+					FileOutputStream out;
+					try {
+						out = new FileOutputStream("/sdcard/snapshot.png");
+						bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			th.start();
 	    } catch (Exception ex) {
 	    	Log.e(this.toString(), ex.toString());
 	    }

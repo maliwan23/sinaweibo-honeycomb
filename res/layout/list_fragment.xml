@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="1dp"
+    android:background="@drawable/list_bg"
+    >
+    <Button android:text="" android:id="@+id/btnUp" android:layout_width="fill_parent" android:layout_height="18dp" android:background="@drawable/list_up"></Button>
+    <ListView android:id="@+id/lstView" android:layout_height="432dp" android:layout_width="match_parent"></ListView>
+    <Button android:text="" android:id="@+id/btnDown" android:layout_width="fill_parent" android:layout_height="18dp" android:background="@drawable/list_down"></Button>
+</LinearLayout>

@@ -79,9 +79,10 @@ public class WeiboHomePage extends Fragment {
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	listview = new ListView(this.getActivity());
+    	View view = inflater.inflate(R.layout.list_fragment, container, false);
+    	listview = (ListView) view.findViewById(R.id.lstView);
     	hide();
-    	return listview;
+    	return view;
     }
     
     public void update() {
