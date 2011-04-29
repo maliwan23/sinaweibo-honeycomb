@@ -40,6 +40,7 @@ public class FloatIcon extends Fragment {
     	    ft.setCustomAnimations(R.anim.bounce_in, R.anim.bounce_out);
     	    ft.hide(this);
     	    ft.commit();
+    	    alert(false);
     	} catch (Exception ex) {
     		Log.e(this.toString(), ex.toString());
     	}
@@ -49,37 +50,36 @@ public class FloatIcon extends Fragment {
     
     public void alert(boolean bAlert)
     {
-    	mAlert = bAlert;
-    	if (!bAlert || mView == null)
+    	mAlert = (bAlert && !this.isHidden() && mView != null);
+    	if (!mAlert)
     		return;
 
-//		final Animation anim_out = new AlphaAnimation(1.0f, 0.0f);
-//		anim_out.setDuration(1500);
-		
-		final Animation anim_in = new AlphaAnimation(0.0f, 1.0f);
-		anim_in.setDuration(1500);
-
-		if (th != null) {
-			th.stop();
-		}
-		
-		th = new Thread() {
-			public void run()
-			{
-				while (mAlert)
+		if (th == null) { 
+			th = new Thread() {
+				public void run()
 				{
-			    	try {
-//			    		mView.startAnimation(anim_out);
-//			    		Thread.sleep(1500);
-			    		mView.startAnimation(anim_in);
-			    		Thread.sleep(1500);
-			    	} catch (Exception ex) {
-			    		Log.e(this.toString(), ex.toString());
-			    	}
+					final Animation anim = new AlphaAnimation(0.0f, 1.0f);
+					anim.setDuration(1500);
+					
+					Runnable action = new Runnable() {
+					    public void run() {
+				    		mView.startAnimation(anim);
+					    }
+					};
+
+					while (mAlert)
+					{
+				    	try {
+				    		FloatIcon.this.getActivity().runOnUiThread(action);
+				    		Thread.sleep(1500);
+				    	} catch (Exception ex) {
+				    		Log.e(this.toString(), ex.toString());
+				    	}
+					}
+					th = null;
 				}
-				mView.setAlpha(1.0f);
-			}
-		};
-		th.start();
+			};
+			th.start();
+		}
     }
 }

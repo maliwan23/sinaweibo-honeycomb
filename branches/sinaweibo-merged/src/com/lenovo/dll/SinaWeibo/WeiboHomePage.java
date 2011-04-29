@@ -1,6 +1,7 @@
 package com.lenovo.dll.SinaWeibo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,6 +13,8 @@ import weibo4andriod.WeiboException;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +39,10 @@ public class WeiboHomePage extends Fragment {
 	private Semaphore sem_timeline;
 	private Weibo weibo;
 	private static final String TAG= "Weibo";
-	private static final String TAG_PIC = "WeiboPic"; 
+	private static final String TAG_PIC = "WeiboPic";
+
+	private long latestUpdate = 0;
+	private long previousUpdate = 0;
 
     Timer mTimer;
     TimerTask mTimerTask;
@@ -81,6 +87,11 @@ public class WeiboHomePage extends Fragment {
 			}
 			
 			Log.d(TAG, status.getUser().getProfileImageURL().toString());
+		}
+		
+		if (friendsTimeline.size() > 0)
+		{
+			latestUpdate = friendsTimeline.get(0).getCreatedAt().getTime();
 		}
 		
 	}
@@ -167,7 +178,18 @@ public class WeiboHomePage extends Fragment {
     
     class UpdateTask extends AsyncTask<Void, Void, Boolean> {
     	
+    	private boolean isRunning = false;
+
+    	public boolean isRunning() {
+    		return isRunning;
+    	}
+
     	@Override
+		protected void onPreExecute() {
+    		isRunning = true;
+		}
+    
+        @Override
 		protected Boolean doInBackground(Void... params) {
     		
     		try {
@@ -193,13 +215,15 @@ public class WeiboHomePage extends Fragment {
     		if (success)
     			updateUIList();
     		mUpdateTask = new UpdateTask();
+    		isRunning = false;
     	}
     }
     
     private void updateAsync()
     {
     	try {
-	    	mUpdateTask.execute();
+    		if (!mUpdateTask.isRunning())
+    			mUpdateTask.execute();
     	} catch (Exception e) {
     		Log.e("updateAsync", e.toString());
     	}
@@ -208,8 +232,14 @@ public class WeiboHomePage extends Fragment {
     private void updateUIList()
     {
     	try {
-			weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringTimeline, middleImageUrlList);
-			listview.setAdapter(weiboPageAdapter);
+			if (latestUpdate > previousUpdate) {
+				weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringTimeline, middleImageUrlList);
+				listview.setAdapter(weiboPageAdapter);
+
+				previousUpdate = latestUpdate;
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("weibo4andriod://NewMessage"));
+                startActivity(i);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

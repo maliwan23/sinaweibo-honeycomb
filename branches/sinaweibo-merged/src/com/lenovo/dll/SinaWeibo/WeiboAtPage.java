@@ -13,6 +13,8 @@ import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +40,9 @@ public class WeiboAtPage extends Fragment {
 	private Weibo weibo;
 	private static final String TAG="Weibo";
 	
+	private long latestUpdate = 0;
+	private long previousUpdate = 0;
+
     Timer mTimer;
     TimerTask mTimerTask;
 	UpdateTask mUpdateTask = new UpdateTask();
@@ -107,6 +112,10 @@ public class WeiboAtPage extends Fragment {
 			Log.d(TAG, status.getUser().getProfileImageURL().toString());
 		}
 		
+		if (mentions.size() > 0)
+		{
+			latestUpdate = mentions.get(0).getCreatedAt().getTime();
+		}
 	}
     
 	class GetMentionsThread extends Thread {
@@ -164,6 +173,17 @@ public class WeiboAtPage extends Fragment {
 
     class UpdateTask extends AsyncTask<Void, Void, Boolean> {
     	
+    	private boolean isRunning = false;
+
+    	public boolean isRunning() {
+    		return isRunning;
+    	}
+
+    	@Override
+		protected void onPreExecute() {
+    		isRunning = true;
+		}
+    	
     	@Override
 		protected Boolean doInBackground(Void... params) {
     		
@@ -191,13 +211,15 @@ public class WeiboAtPage extends Fragment {
     		if (success)
     			updateUIList();
     		mUpdateTask = new UpdateTask();
+    		isRunning = false;
     	}
     }
     
     private void updateAsync()
     {
     	try {
-	    	mUpdateTask.execute();
+    		if (!mUpdateTask.isRunning())
+    			mUpdateTask.execute();
     	} catch (Exception e) {
     		Log.e("updateAsync", e.toString());
     	}
@@ -206,8 +228,14 @@ public class WeiboAtPage extends Fragment {
     private void updateUIList()
     {
     	try {
-			weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
-			listview.setAdapter(weiboPageAdapter);
+			if (latestUpdate > previousUpdate) {
+				weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
+				listview.setAdapter(weiboPageAdapter);
+
+				previousUpdate = latestUpdate;
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("weibo4andriod://NewMessage"));
+                startActivity(i);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
