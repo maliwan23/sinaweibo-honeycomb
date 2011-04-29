@@ -1,9 +1,7 @@
 package com.lenovo.dll.SinaWeibo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
@@ -93,8 +91,8 @@ public class VideoFragment extends Fragment {
 				public void run() {
 					FileOutputStream out;
 					try {
-						out = new FileOutputStream("/sdcard/snapshot.png");
-						bmp.compress(Bitmap.CompressFormat.PNG, 50, out);
+						out = new FileOutputStream("/sdcard/snapshot.jpg");
+						bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

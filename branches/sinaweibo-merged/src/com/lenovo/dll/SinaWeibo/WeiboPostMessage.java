@@ -4,15 +4,14 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.concurrent.Semaphore;
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
-import weibo4andriod.WeiboException;
 import weibo4andriod.http.ImageItem;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,19 +20,18 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class WeiboPostMessage extends Fragment {
 	
 	private EditText text;
 	private Button button;
+	private Button capture;
+	private ImageView image;
 	private Status status;
-	private static final String TAG = "weibo";
 	private String UrlString;
 	private String inputContent;
-	
-	private Semaphore sem_postmessage;
-	private PostPrivateMessageThread postmsgthrd;
 	
 	private Weibo weibo;
 	private ImageItem picture;
@@ -45,17 +43,13 @@ public class WeiboPostMessage extends Fragment {
     	hide();
 		
 		text = (EditText) view.findViewById(R.id.entry);
-		
+  		image = (ImageView) view.findViewById(R.id.imgSnapshot2);
+  		capture = (Button) view.findViewById(R.id.btnCaptureVideo);
+
 		button = (Button) view.findViewById(R.id.ok);
-        
-		sem_postmessage = new Semaphore(1);
-		
-		
         button.setOnClickListener(new OnClickListener(){
 			
 			public void onClick(View v) {
-				
-				view.getContext();
 				
 				if (text.getText().length() == 0)
 				{
@@ -64,47 +58,11 @@ public class WeiboPostMessage extends Fragment {
 				else 
 				{
 				    try {
-
-				    	    inputContent = text.getText().toString();
-				    	    inputContent += " " + VideoFragment.videoPath;
-				    	    
-				          	weibo = OAuthConstant.getInstance().getWeibo();
-
-				          	try {
-								sem_postmessage.acquire();
-								
-								ImageGenerated();
-								
-						        postmsgthrd = new PostPrivateMessageThread();
-								postmsgthrd.start();
-				          	} catch (Exception e) {
-								e.printStackTrace();
-							} 
-				   			
-				   			sem_postmessage.acquire();
-				   			
-				   			
-				          	Log.d(TAG, status.getId() + " : "+ status.getText()+"  "+status.getCreatedAt());
-				          	
-				          	if ( status.getText() != null && !status.getText().equals("") )
-				          	{
-				                // When clicked, show a toast with the TextView text
-				                Toast.makeText(view.getContext(), "Post message successfully.",
-				                    Toast.LENGTH_SHORT).show();
-				                
-				                Intent i = new Intent(view.getContext(), MainActivity.class);
-				                i.setData(Uri.parse("weibo4andriod://UpdateHomepage"));
-				                startActivity(i);
-				          	}
-
-				   		} catch (Exception e) {
-				   			e.printStackTrace();
-				   		} finally {
-							sem_postmessage.release();
-						}
-
+				    	new PostTask().execute();
+			   		} catch (Exception e) {
+			   			e.printStackTrace();
+					}
 				}
-				
 			}        	
         });
         return view;
@@ -112,7 +70,7 @@ public class WeiboPostMessage extends Fragment {
 
 	public void ImageGenerated() {
 		try {
-	        byte[] content= readFileImage("/sdcard/snapshot.png");
+	        byte[] content= readFileImage("/sdcard/snapshot.jpg");
 	        
 			if(content.length <= 0){
 				System.out.println("Image file is null");
@@ -127,22 +85,6 @@ public class WeiboPostMessage extends Fragment {
 		}
 	}
 	
-	class PostPrivateMessageThread extends Thread {
-	
-		public void run(){
-			try {
-	          	status = weibo.uploadStatus(UrlString, picture);		
-			} catch (WeiboException e){
-				e.printStackTrace();
-			} catch (Exception e){
-				e.printStackTrace();
-			}finally {
-				sem_postmessage.release();
-			}
-
-		}
-	}
-
 	public static byte[] readFileImage(String filename)throws IOException {
 		BufferedInputStream bufferedInputStream=new BufferedInputStream(
 				new FileInputStream(filename));
@@ -176,6 +118,58 @@ public class WeiboPostMessage extends Fragment {
     	    ft.commit();
     	} catch (Exception ex) {
     		Log.e(this.toString(), ex.toString());
+    	}
+    }
+    
+    class PostTask extends AsyncTask<Void, Void, Boolean> {
+    	
+    	@Override
+		protected void onPreExecute() {
+    		text.setEnabled(false);
+    		button.setEnabled(false);
+    		capture.setEnabled(false);
+		}
+    
+        @Override
+		protected Boolean doInBackground(Void... params) {
+    		
+    		try {
+	    	    inputContent = text.getText().toString();
+	    	    inputContent += " " + VideoFragment.videoPath;
+	    	    
+	          	weibo = OAuthConstant.getInstance().getWeibo();
+
+				ImageGenerated();
+				status = weibo.uploadStatus(UrlString, picture);
+	   			
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    			return false;
+    		}
+			return true;
+		}
+    	
+    	@Override
+    	protected void onPostExecute(final Boolean success) {
+    		text.setEnabled(true);
+    		button.setEnabled(true);
+    		capture.setEnabled(true);
+    		if (success) {
+	          	if ( status.getText() != null && !status.getText().equals("") )
+	          	{
+	          		text.setText("");
+          			image.setImageBitmap(null);
+	          		
+	                Toast.makeText(view.getContext(), "Post message successfully.",
+	                    Toast.LENGTH_LONG).show();
+
+	                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("weibo4andriod://UpdateHomepage"));
+	                startActivity(i);
+	                return;
+	          	}
+    		}
+            Toast.makeText(view.getContext(), "Failed to post message, please try again later.",
+            		Toast.LENGTH_LONG).show();
     	}
     }
 }
