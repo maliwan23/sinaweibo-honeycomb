@@ -58,20 +58,30 @@ public class FloatIcon extends Fragment {
 			th = new Thread() {
 				public void run()
 				{
-					final Animation anim = new AlphaAnimation(0.0f, 1.0f);
-					anim.setDuration(1500);
+					final Animation anim_in = new AlphaAnimation(0.0f, 1.0f);
+					anim_in.setDuration(1000);
+					final Animation anim_out = new AlphaAnimation(1.0f, 0.0f);
+					anim_out.setDuration(1000);
 					
-					Runnable action = new Runnable() {
+					Runnable action_in = new Runnable() {
 					    public void run() {
-				    		mView.startAnimation(anim);
+				    		mView.startAnimation(anim_in);
+					    }
+					};
+
+					Runnable action_out = new Runnable() {
+					    public void run() {
+				    		mView.startAnimation(anim_out);
 					    }
 					};
 
 					while (mAlert)
 					{
 				    	try {
-				    		FloatIcon.this.getActivity().runOnUiThread(action);
-				    		Thread.sleep(1500);
+				    		FloatIcon.this.getActivity().runOnUiThread(action_out);
+				    		Thread.sleep(1000);
+				    		FloatIcon.this.getActivity().runOnUiThread(action_in);
+				    		Thread.sleep(1100);
 				    	} catch (Exception ex) {
 				    		Log.e(this.toString(), ex.toString());
 				    	}
