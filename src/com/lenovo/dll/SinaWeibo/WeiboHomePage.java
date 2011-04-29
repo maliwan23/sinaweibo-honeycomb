@@ -1,16 +1,13 @@
 package com.lenovo.dll.SinaWeibo;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -219,7 +216,7 @@ public class WeiboHomePage extends Fragment {
     	}
     }
     
-    private void updateAsync()
+    public void updateAsync()
     {
     	try {
     		if (!mUpdateTask.isRunning())

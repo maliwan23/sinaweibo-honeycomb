@@ -2,9 +2,6 @@ package com.lenovo.dll.SinaWeibo;
 
 import java.net.URL;
 import java.util.concurrent.Semaphore;
-
-import com.lenovo.dll.SinaWeibo.WeiboHomePage.GetTimelineThread;
-
 import weibo4andriod.User;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
@@ -25,7 +22,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -111,13 +107,13 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 					postLogin(uri);
 					video.resumeVideo();
 				} else if (host.matches("UpdateHomepage")) {
-		        	RadioGroup rg = (RadioGroup) findViewById(R.id.main_radio);
-		        	if (rg != null)
-		        		rg.check(R.id.radioHomepage);
+//		        	RadioGroup rg = (RadioGroup) findViewById(R.id.main_radio);
+//		        	if (rg != null)
+//		        		rg.check(R.id.radioHomepage);
 
 		        	WeiboHomePage homepage = (WeiboHomePage) getFragmentManager().findFragmentById(R.id.homepage_fragment);
 		    	    if (homepage != null) {
-		    	    	homepage.update();
+		    	    	homepage.updateAsync();
 		    	    }
 				} else if (host.matches("NewMessage")) {
 					alertNewMessage();
