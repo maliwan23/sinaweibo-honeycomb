@@ -119,13 +119,23 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 		    	    if (homepage != null) {
 		    	    	homepage.update();
 		    	    }
+				} else if (host.matches("NewMessage")) {
+					alertNewMessage();
 				}
-				return;
+			} else if (scheme.matches("video")) {
+				String path = uri.getPath();
+	            video.startVideo(path);
 			}
-	    	
-			String path = uri.getPath();
-            video.startVideo(path);
-            
+    	} catch (Exception ex) {
+    		Log.e(this.toString(), ex.toString());
+    	}
+    }
+    
+    private void alertNewMessage()
+    {
+    	try {
+    	    FloatIcon fi = (FloatIcon) getFragmentManager().findFragmentById(R.id.float_fragment);
+	    	fi.alert(true);
     	} catch (Exception ex) {
     		Log.e(this.toString(), ex.toString());
     	}
@@ -229,7 +239,6 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 	    	    if (!fp.isHidden()) {
 	        	    fp.hide();
 	        	    ff.show();
-//	        	    ff.alert(true);
 	    	    }
         	} catch (Exception ex) {
         		Log.e(this.toString(), ex.toString());
@@ -356,7 +365,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 			try {
 				requestToken= OAuthConstant.getInstance().getRequestToken();
 				accessToken=requestToken.getAccessToken(uri.getQueryParameter("oauth_verifier"));
-				OAuthConstant.getInstance().setAccessToken(accessToken);		
+				OAuthConstant.getInstance().setAccessToken(accessToken);
 			} catch (WeiboException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
