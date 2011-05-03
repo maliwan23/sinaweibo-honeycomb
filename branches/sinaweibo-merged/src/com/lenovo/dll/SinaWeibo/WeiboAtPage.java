@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-
-import com.lenovo.dll.SinaWeibo.WeiboHomePage.UpdateTask;
-
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
