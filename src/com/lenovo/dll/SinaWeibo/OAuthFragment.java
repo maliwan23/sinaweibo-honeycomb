@@ -41,15 +41,15 @@ public class OAuthFragment extends Fragment {
         mView = inflater.inflate(R.layout.login, container, false);
 		System.setProperty("weibo4j.oauth.consumerKey", Weibo.CONSUMER_KEY);
     	System.setProperty("weibo4j.oauth.consumerSecret", Weibo.CONSUMER_SECRET);
-    	Button beginOuathBtn = (Button) mView.findViewById(R.id.Button_Load);
-    	
 
+    	Button beginOuathBtn = (Button) mView.findViewById(R.id.Button_Load);
     	beginOuathBtn.setOnClickListener(new Button.OnClickListener()
         {
 
             //@Override
             public void onClick( View v )
             {
+            	v.setEnabled(false);
                 new myThread().start();
             }
         } );
@@ -64,7 +64,7 @@ public class OAuthFragment extends Fragment {
     		Message msg = new Message();
     		msg.what = HANDLER_TEST;
     		
-        	Weibo weibo = OAuthConstant.getInstance().getWeibo();
+        	Weibo weibo = OAuthConstant.getInstance().init();
         	RequestToken requestToken;
 			try {
 				requestToken =weibo.getOAuthRequestToken("weibo4andriod://OAuthActivity");
