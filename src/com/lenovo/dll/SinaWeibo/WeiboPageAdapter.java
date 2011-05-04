@@ -14,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WeiboPageAdapter extends BaseAdapter {
-	private Activity activity;
-	private List <String> profileImageData;
-	private List <String> textset;
-	private List <String> middleImageData;
-	private static LayoutInflater inflater = null;
-	public ImageLoader imageLoader;
-	
+    private Activity activity;
+    private List <String> profileImageData;
+    private List <String> textset;
+    private List <String> middleImageData;
+    private static LayoutInflater inflater = null;
+    public ImageLoader imageLoader;
+    
     public WeiboPageAdapter(Activity a, List<String> d, List<String> ts, List<String> img) {
         activity = a;
         profileImageData=d;
@@ -50,7 +50,7 @@ public class WeiboPageAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-    	
+        
         View vi=convertView;
         ViewHolder holder;
         
@@ -71,14 +71,14 @@ public class WeiboPageAdapter extends BaseAdapter {
         imageLoader.DisplayImage(profileImageData.get(position), activity, holder.profileImage);
         if (middleImageData.get(position).equals("NoPhotos"))
         {
-        	// do nothing
-        	holder.middleImage.setVisibility(View.GONE);
+            // do nothing
+            holder.middleImage.setVisibility(View.GONE);
         }
-    	imageLoader.DisplayImage(middleImageData.get(position), activity, holder.middleImage);	
-    	
+        imageLoader.DisplayImage(middleImageData.get(position), activity, holder.middleImage);  
+        
         Pattern pattern = Pattern.compile("video://\\S+");
         Linkify.addLinks(holder.text, pattern, "video://");
-    	
+        
         return vi;
     }
     

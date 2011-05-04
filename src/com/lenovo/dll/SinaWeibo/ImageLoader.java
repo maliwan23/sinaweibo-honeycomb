@@ -67,12 +67,12 @@ public class ImageLoader {
     // Image Display helper
     public void DisplayImage(String url, Activity activity, ImageView imageView)
     {
-    	// display it if cached.
+        // display it if cached.
         if(cache.containsKey(url))
             imageView.setImageBitmap(cache.get(url));
         else
         {
-        	// queue the request and show a default icon till remote down process finished.
+            // queue the request and show a default icon till remote down process finished.
             imageView.setImageResource(stub_id);
             queuePhoto(url, activity, imageView);
         }    

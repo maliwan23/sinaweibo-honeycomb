@@ -23,103 +23,103 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class OAuthFragment extends Fragment {
-	
-	static final String TAG = "Handler";
-	static final int HANDLER_TEST = 1;
+    
+    static final String TAG = "Handler";
+    static final int HANDLER_TEST = 1;
 
-	private View mView = null;
-	private Uri mUri;
-	
-	Handler h = new Handler(){
-		public void handleMessage (Message msg)
-		{
-			switch(msg.what)
-			{
-			case HANDLER_TEST:
-				Log.d(TAG, "The handler thread id = " + Thread.currentThread().getId() + "\n");
-			}
-		}
-	};
-	
+    private View mView = null;
+    private Uri mUri;
+    
+    Handler h = new Handler(){
+        public void handleMessage (Message msg)
+        {
+            switch(msg.what)
+            {
+            case HANDLER_TEST:
+                Log.d(TAG, "The handler thread id = " + Thread.currentThread().getId() + "\n");
+            }
+        }
+    };
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.login, container, false);
-		System.setProperty("weibo4j.oauth.consumerKey", Weibo.CONSUMER_KEY);
-    	System.setProperty("weibo4j.oauth.consumerSecret", Weibo.CONSUMER_SECRET);
+        System.setProperty("weibo4j.oauth.consumerKey", Weibo.CONSUMER_KEY);
+        System.setProperty("weibo4j.oauth.consumerSecret", Weibo.CONSUMER_SECRET);
 
-    	Button beginOuathBtn = (Button) mView.findViewById(R.id.Button_Load);
-    	beginOuathBtn.setOnClickListener(new Button.OnClickListener()
+        Button beginOuathBtn = (Button) mView.findViewById(R.id.Button_Load);
+        beginOuathBtn.setOnClickListener(new Button.OnClickListener()
         {
 
             //@Override
             public void onClick( View v )
             {
-            	v.setEnabled(false);
+                v.setEnabled(false);
                 new myThread().start();
             }
         } );
 
-    	return mView;
-	}
-	
-    class myThread extends Thread
-    {
-    	public void run()
-    	{
-    		Message msg = new Message();
-    		msg.what = HANDLER_TEST;
-    		
-        	Weibo weibo = OAuthConstant.getInstance().init();
-        	RequestToken requestToken;
-			try {
-				requestToken = weibo.getOAuthRequestToken("weibo4andriod://OAuthActivity");
-    			mUri = Uri.parse(requestToken.getAuthenticationURL()+ "&from=xweibo");
-    			OAuthConstant.getInstance().setRequestToken(requestToken);
-
-//    			startActivity(new Intent(Intent.ACTION_VIEW, mUri));
-    			OAuthFragment.this.getActivity().runOnUiThread(mLoginAction);
-    			
-			} catch (WeiboException e) {
-				e.printStackTrace();
-				Toast.makeText(OAuthFragment.this.getActivity(), "Failed to login!", Toast.LENGTH_LONG);
-			}
-    		
-    		h.sendMessage(msg);
-    		Log.d(TAG, "The worker thread id = " + Thread.currentThread().getId() + "\n");  		
-    	}
+        return mView;
     }
     
-	Runnable mLoginAction = new Runnable() {
-	    public void run() {
-	    	try {
-	        	WebView wvLogin = (WebView) OAuthFragment.this.getView().findViewById(R.id.webViewLogin);
-	        	if (wvLogin != null) {
-	        		WebSettings settings = wvLogin.getSettings();
-	        		settings.setBuiltInZoomControls(true);
-	        		settings.setDisplayZoomControls(true);
-	        		settings.setDefaultZoom(ZoomDensity.MEDIUM);
-	        		settings.setSupportZoom(true);
-	        		settings.setLoadWithOverviewMode(true);
-	        		settings.setJavaScriptEnabled(true);
-	        		settings.setSaveFormData(true);
-	        		settings.setSavePassword(true);
-	        		wvLogin.setVisibility(0);
-	        		wvLogin.loadUrl(mUri.toString());
-	        	}
-	    	} catch (Exception e) {
-	    		Log.e("new mLoginAction", e.toString());
-	    	}
-	    }
-	};
-
-	public void hide()
+    class myThread extends Thread
     {
-    	try {
-    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
-    	    ft.hide(this);
-    	    ft.commit();
-    	} catch (Exception ex) {
-    		Log.e(this.toString(), ex.toString());
-    	}
+        public void run()
+        {
+            Message msg = new Message();
+            msg.what = HANDLER_TEST;
+            
+            Weibo weibo = OAuthConstant.getInstance().init();
+            RequestToken requestToken;
+            try {
+                requestToken = weibo.getOAuthRequestToken("weibo4andriod://OAuthActivity");
+                mUri = Uri.parse(requestToken.getAuthenticationURL()+ "&from=xweibo");
+                OAuthConstant.getInstance().setRequestToken(requestToken);
+
+//              startActivity(new Intent(Intent.ACTION_VIEW, mUri));
+                OAuthFragment.this.getActivity().runOnUiThread(mLoginAction);
+                
+            } catch (WeiboException e) {
+                e.printStackTrace();
+                Toast.makeText(OAuthFragment.this.getActivity(), "Failed to login!", Toast.LENGTH_LONG);
+            }
+            
+            h.sendMessage(msg);
+            Log.d(TAG, "The worker thread id = " + Thread.currentThread().getId() + "\n");          
+        }
+    }
+    
+    Runnable mLoginAction = new Runnable() {
+        public void run() {
+            try {
+                WebView wvLogin = (WebView) OAuthFragment.this.getView().findViewById(R.id.webViewLogin);
+                if (wvLogin != null) {
+                    WebSettings settings = wvLogin.getSettings();
+                    settings.setBuiltInZoomControls(true);
+                    settings.setDisplayZoomControls(true);
+                    settings.setDefaultZoom(ZoomDensity.MEDIUM);
+                    settings.setSupportZoom(true);
+                    settings.setLoadWithOverviewMode(true);
+                    settings.setJavaScriptEnabled(true);
+                    settings.setSaveFormData(true);
+                    settings.setSavePassword(true);
+                    wvLogin.setVisibility(0);
+                    wvLogin.loadUrl(mUri.toString());
+                }
+            } catch (Exception e) {
+                Log.e("new mLoginAction", e.toString());
+            }
+        }
+    };
+
+    public void hide()
+    {
+        try {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.hide(this);
+            ft.commit();
+        } catch (Exception ex) {
+            Log.e(this.toString(), ex.toString());
+        }
     }
 }

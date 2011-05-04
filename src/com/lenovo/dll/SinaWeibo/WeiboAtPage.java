@@ -21,220 +21,220 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class WeiboAtPage extends Fragment {
-	
-	
-	private ListView listview;
-	private WeiboPageAdapter weiboPageAdapter;
-	
-	private GetMentionsThread getMentionsThread;
-	
-	private List<Status> mentions;
-	private List<String> stringMentions;
-	private List<String> profileImageUrlList;
-	private List<String> middleImageUrlList;
-	
-	private Semaphore sem_mentions;
-	private Weibo weibo;
-	private static final String TAG="Weibo";
-	
-	private long latestUpdate = 0;
-	private long previousUpdate = 0;
+    
+    
+    private ListView listview;
+    private WeiboPageAdapter weiboPageAdapter;
+    
+    private GetMentionsThread getMentionsThread;
+    
+    private List<Status> mentions;
+    private List<String> stringMentions;
+    private List<String> profileImageUrlList;
+    private List<String> middleImageUrlList;
+    
+    private Semaphore sem_mentions;
+    private Weibo weibo;
+    private static final String TAG="Weibo";
+    
+    private long latestUpdate = 0;
+    private long previousUpdate = 0;
 
     Timer mTimer;
     TimerTask mTimerTask;
-	UpdateTask mUpdateTask = new UpdateTask();
+    UpdateTask mUpdateTask = new UpdateTask();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	View view = inflater.inflate(R.layout.list_fragment, container, false);
-    	listview = (ListView) view.findViewById(R.id.lstView);
-    	hide();
-    	return view;
+        View view = inflater.inflate(R.layout.list_fragment, container, false);
+        listview = (ListView) view.findViewById(R.id.lstView);
+        hide();
+        return view;
     }
         
     public void update() {
-		stringMentions = new ArrayList<String>();
-		profileImageUrlList = new ArrayList<String>();
-		middleImageUrlList = new ArrayList<String>();
+        stringMentions = new ArrayList<String>();
+        profileImageUrlList = new ArrayList<String>();
+        middleImageUrlList = new ArrayList<String>();
 
         getMentionsThread = new GetMentionsThread();
         
         weibo = OAuthConstant.getInstance().getWeibo();
         weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
         
-		sem_mentions = new Semaphore(1);
+        sem_mentions = new Semaphore(1);
         
-		try {
-			sem_mentions.acquire();
-			getMentionsThread.start();	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
+            sem_mentions.acquire();
+            getMentionsThread.start();  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		try {
-			sem_mentions.acquire();
-			
-			getListData();
+        try {
+            sem_mentions.acquire();
+            
+            getListData();
 
-			weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
-			
-			listview.setAdapter(weiboPageAdapter);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			sem_mentions.release();
-		}
+            weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
+            
+            listview.setAdapter(weiboPageAdapter);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sem_mentions.release();
+        }
     }
     
-	private void getListData(){
+    private void getListData(){
 
-		StringBuilder stringBuilder = new StringBuilder("1");
-		
-		for (Status status : mentions) {
-			stringBuilder.setLength(0);
-			stringBuilder.append("<font color='#CC0000'>" + status.getUser().getScreenName() + ": </font>"
-					+ status.getText() + "\n");
-			stringMentions.add(stringBuilder.toString());
-			Log.d(TAG, stringBuilder.toString());
-			
-			profileImageUrlList.add(status.getUser().getProfileImageURL().toString());
-			if (status.getBmiddle_pic() != null && !status.getBmiddle_pic().toString().equals(""))
-			{
-				middleImageUrlList.add(status.getBmiddle_pic().toString());
-			}else {
-				middleImageUrlList.add("NoPhotos");
-			}
-			
-			Log.d(TAG, status.getUser().getProfileImageURL().toString());
-		}
-		
-		if (mentions.size() > 0)
-		{
-			latestUpdate = mentions.get(0).getCreatedAt().getTime();
-		}
-	}
+        StringBuilder stringBuilder = new StringBuilder("1");
+        
+        for (Status status : mentions) {
+            stringBuilder.setLength(0);
+            stringBuilder.append("<font color='#CC0000'>" + status.getUser().getScreenName() + ": </font>"
+                    + status.getText() + "\n");
+            stringMentions.add(stringBuilder.toString());
+            Log.d(TAG, stringBuilder.toString());
+            
+            profileImageUrlList.add(status.getUser().getProfileImageURL().toString());
+            if (status.getBmiddle_pic() != null && !status.getBmiddle_pic().toString().equals(""))
+            {
+                middleImageUrlList.add(status.getBmiddle_pic().toString());
+            }else {
+                middleImageUrlList.add("NoPhotos");
+            }
+            
+            Log.d(TAG, status.getUser().getProfileImageURL().toString());
+        }
+        
+        if (mentions.size() > 0)
+        {
+            latestUpdate = mentions.get(0).getCreatedAt().getTime();
+        }
+    }
     
-	class GetMentionsThread extends Thread {
+    class GetMentionsThread extends Thread {
 
-		public void run(){
-			try {
-			mentions = weibo.getMentions();
-						
-			} catch (WeiboException e){
-				e.printStackTrace();
-			} catch (Exception e){
-				e.printStackTrace();
-			} finally {
-				sem_mentions.release();
-			}
-		}
-	}
+        public void run(){
+            try {
+            mentions = weibo.getMentions();
+                        
+            } catch (WeiboException e){
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            } finally {
+                sem_mentions.release();
+            }
+        }
+    }
 
     public void show()
     {
-    	try {
-    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
-    	    ft.show(this);
-    	    ft.commit();
-    	    
-    	    if (mTimer == null) {
-	    	    mTimer = new Timer(true);
-            	mTimerTask = new TimerTask()
-	        	{
-	        		public void run()
-	        		{
-	        			updateAsync();
-	        		}        
-	        	};
-	        	mTimer.schedule(mTimerTask, 100, 60000);
-    	    }
+        try {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.show(this);
+            ft.commit();
+            
+            if (mTimer == null) {
+                mTimer = new Timer(true);
+                mTimerTask = new TimerTask()
+                {
+                    public void run()
+                    {
+                        updateAsync();
+                    }        
+                };
+                mTimer.schedule(mTimerTask, 100, 60000);
+            }
 
-//    	    if (listview.getChildCount() == 0)
-//    	    	update();
-    	} catch (Exception ex) {
-    		Log.e(this.toString(), ex.toString());
-    	}
+//          if (listview.getChildCount() == 0)
+//              update();
+        } catch (Exception ex) {
+            Log.e(this.toString(), ex.toString());
+        }
     }
     
     public void hide()
     {
-    	try {
-    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
-    	    ft.hide(this);
-    	    ft.commit();
-    	} catch (Exception ex) {
-    		Log.e(this.toString(), ex.toString());
-    	}
+        try {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.hide(this);
+            ft.commit();
+        } catch (Exception ex) {
+            Log.e(this.toString(), ex.toString());
+        }
     }
 
     class UpdateTask extends AsyncTask<Void, Void, Boolean> {
-    	
-    	private boolean isRunning = false;
+        
+        private boolean isRunning = false;
 
-    	public boolean isRunning() {
-    		return isRunning;
-    	}
+        public boolean isRunning() {
+            return isRunning;
+        }
 
-    	@Override
-		protected void onPreExecute() {
-    		isRunning = true;
-		}
-    	
-    	@Override
-		protected Boolean doInBackground(Void... params) {
-    		
-    		try {
-    			stringMentions = new ArrayList<String>();
-    			profileImageUrlList = new ArrayList<String>();
-    			middleImageUrlList = new ArrayList<String>();
+        @Override
+        protected void onPreExecute() {
+            isRunning = true;
+        }
+        
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            
+            try {
+                stringMentions = new ArrayList<String>();
+                profileImageUrlList = new ArrayList<String>();
+                middleImageUrlList = new ArrayList<String>();
 
-    	        weibo = OAuthConstant.getInstance().getWeibo();
-    	        weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
-    	        
-    			mentions = weibo.getMentions();
+                weibo = OAuthConstant.getInstance().getWeibo();
+                weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
+                
+                mentions = weibo.getMentions();
 
-    			getListData();
-    				
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    			return false;
-    		}
-			return true;
-		}
-    	
-    	@Override
-    	protected void onPostExecute(final Boolean success) {
-    		if (success)
-    			updateUIList();
-    		mUpdateTask = new UpdateTask();
-    		isRunning = false;
-    	}
+                getListData();
+                    
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+        
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success)
+                updateUIList();
+            mUpdateTask = new UpdateTask();
+            isRunning = false;
+        }
     }
     
     private void updateAsync()
     {
-    	try {
-    		if (!mUpdateTask.isRunning())
-    			mUpdateTask.execute();
-    	} catch (Exception e) {
-    		Log.e("updateAsync", e.toString());
-    	}
+        try {
+            if (!mUpdateTask.isRunning())
+                mUpdateTask.execute();
+        } catch (Exception e) {
+            Log.e("updateAsync", e.toString());
+        }
     }
     
     private void updateUIList()
     {
-    	try {
-			if (latestUpdate > previousUpdate) {
-				weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
-				listview.setAdapter(weiboPageAdapter);
+        try {
+            if (latestUpdate > previousUpdate) {
+                weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
+                listview.setAdapter(weiboPageAdapter);
 
-				previousUpdate = latestUpdate;
+                previousUpdate = latestUpdate;
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("weibo4andriod://NewMessage"));
                 startActivity(i);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

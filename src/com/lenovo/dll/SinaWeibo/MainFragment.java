@@ -20,26 +20,26 @@ public class MainFragment extends Fragment {
 
     public void show()
     {
-    	try {
-    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
-//    	    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_in);
-    	    ft.show(this);
-    	    ft.commit();
-    	} catch (Exception ex) {
-    		Log.e(this.toString(), ex.toString());
-    	}
+        try {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//          ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_in);
+            ft.show(this);
+            ft.commit();
+        } catch (Exception ex) {
+            Log.e(this.toString(), ex.toString());
+        }
     }
 
     public void hide()
     {
-    	try {
-    	    FragmentTransaction ft = getFragmentManager().beginTransaction();
-//    	    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
-    	    ft.hide(this);
-    	    ft.commit();
-    	} catch (Exception ex) {
-    		Log.e(this.toString(), ex.toString());
-    	}
+        try {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//          ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+            ft.hide(this);
+            ft.commit();
+        } catch (Exception ex) {
+            Log.e(this.toString(), ex.toString());
+        }
     }
 
 }
