@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
@@ -25,8 +26,7 @@ public class WeiboAtPage extends Fragment {
     
     private ListView listview;
     private WeiboPageAdapter weiboPageAdapter;
-    
-    private GetMentionsThread getMentionsThread;
+
     
     private List<Status> mentions;
     private List<String> stringMentions;
@@ -50,41 +50,6 @@ public class WeiboAtPage extends Fragment {
         listview = (ListView) view.findViewById(R.id.lstView);
         hide();
         return view;
-    }
-        
-    public void update() {
-        stringMentions = new ArrayList<String>();
-        profileImageUrlList = new ArrayList<String>();
-        middleImageUrlList = new ArrayList<String>();
-
-        getMentionsThread = new GetMentionsThread();
-        
-        weibo = OAuthConstant.getInstance().getWeibo();
-        weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
-        
-        sem_mentions = new Semaphore(1);
-        
-        try {
-            sem_mentions.acquire();
-            getMentionsThread.start();  
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            sem_mentions.acquire();
-            
-            getListData();
-
-            weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringMentions, middleImageUrlList);
-            
-            listview.setAdapter(weiboPageAdapter);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            sem_mentions.release();
-        }
     }
     
     private void getListData(){

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
@@ -24,7 +25,6 @@ public class WeiboHomePage extends Fragment {
     
     private ListView listview;
 
-    private GetTimelineThread getTimelineThread;
     private WeiboPageAdapter weiboPageAdapter;
 
 
@@ -101,41 +101,6 @@ public class WeiboHomePage extends Fragment {
         return view;
     }
     
-    public void update() {
-        stringTimeline = new ArrayList<String>();
-        profileImageUrlList = new ArrayList<String>();
-        middleImageUrlList = new ArrayList<String>();
-    
-        getTimelineThread = new GetTimelineThread();
-        
-        weibo = OAuthConstant.getInstance().getWeibo();
-        weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
-        
-        sem_timeline = new Semaphore(1);
-        
-        try{
-            sem_timeline.acquire();
-            getTimelineThread.start();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        try {
-            sem_timeline.acquire();
-            
-            getListData();
-            
-            weiboPageAdapter = new WeiboPageAdapter(this.getActivity(), profileImageUrlList, stringTimeline, middleImageUrlList);
-            
-            listview.setAdapter(weiboPageAdapter);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            sem_timeline.release();
-        }
-    }
- 
     public void show()
     {
         try {
@@ -155,8 +120,6 @@ public class WeiboHomePage extends Fragment {
                 mTimer.schedule(mTimerTask, 100, 60000);
             }
 
-//          if (listview.getChildCount() == 0)
-//              update();
         } catch (Exception ex) {
             Log.e(this.toString(), ex.toString());
         }
