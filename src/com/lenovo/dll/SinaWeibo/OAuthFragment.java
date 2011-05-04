@@ -56,6 +56,7 @@ public class OAuthFragment extends Fragment {
             {
                 v.setEnabled(false);
                 new myThread().start();
+                v.setVisibility(View.GONE); 
             }
         } );
 

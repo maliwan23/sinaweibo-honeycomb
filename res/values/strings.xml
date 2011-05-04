@@ -4,4 +4,6 @@
     <string name="app_name">电视微博</string>
     <string name="buttonname">OK</string>
 	<string name="video_path">/sdcard/Tom.Clancy_s_.H.A.W.X.2.Official.Trailer.mp4</string>
+	<string name="signin">登录</string>
+	<string name="skipit">跳过</string>
 </resources>
