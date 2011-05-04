@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-	<Button android:layout_height="wrap_content" android:text="登录" android:layout_width="wrap_content" android:id="@+id/Button_Load" android:layout_gravity="center"></Button>
-	<Button android:layout_height="wrap_content" android:text="跳过" android:layout_width="wrap_content" android:id="@+id/Button_SkipLogin" android:layout_gravity="center" android:visibility="gone"></Button>
+    
+	<Button android:layout_height="wrap_content" android:text="@string/signin" android:layout_width="wrap_content" android:id="@+id/Button_Load" android:layout_gravity="center"></Button>
+	<Button android:layout_height="wrap_content" android:text="@string/skipit" android:layout_width="wrap_content" android:id="@+id/Button_SkipLogin" android:layout_gravity="center" android:visibility="gone"></Button>
 	<WebView android:id="@+id/webViewLogin" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="invisible"></WebView>
 </LinearLayout>
