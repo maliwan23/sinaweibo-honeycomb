@@ -16,7 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.ZoomDensity;
+import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class OAuthFragment extends Fragment {
 	
@@ -24,6 +28,7 @@ public class OAuthFragment extends Fragment {
 	static final int HANDLER_TEST = 1;
 
 	private View mView = null;
+	private Uri mUri;
 	
 	Handler h = new Handler(){
 		public void handleMessage (Message msg)
@@ -67,12 +72,16 @@ public class OAuthFragment extends Fragment {
         	Weibo weibo = OAuthConstant.getInstance().init();
         	RequestToken requestToken;
 			try {
-				requestToken =weibo.getOAuthRequestToken("weibo4andriod://OAuthActivity");
-    			Uri uri = Uri.parse(requestToken.getAuthenticationURL()+ "&from=xweibo");
+				requestToken = weibo.getOAuthRequestToken("weibo4andriod://OAuthActivity");
+    			mUri = Uri.parse(requestToken.getAuthenticationURL()+ "&from=xweibo");
     			OAuthConstant.getInstance().setRequestToken(requestToken);
-    			startActivity(new Intent(Intent.ACTION_VIEW, uri));
+
+//    			startActivity(new Intent(Intent.ACTION_VIEW, mUri));
+    			OAuthFragment.this.getActivity().runOnUiThread(mLoginAction);
+    			
 			} catch (WeiboException e) {
 				e.printStackTrace();
+				Toast.makeText(OAuthFragment.this.getActivity(), "Failed to login!", Toast.LENGTH_LONG);
 			}
     		
     		h.sendMessage(msg);
@@ -80,7 +89,30 @@ public class OAuthFragment extends Fragment {
     	}
     }
     
-    public void hide()
+	Runnable mLoginAction = new Runnable() {
+	    public void run() {
+	    	try {
+	        	WebView wvLogin = (WebView) OAuthFragment.this.getView().findViewById(R.id.webViewLogin);
+	        	if (wvLogin != null) {
+	        		WebSettings settings = wvLogin.getSettings();
+	        		settings.setBuiltInZoomControls(true);
+	        		settings.setDisplayZoomControls(true);
+	        		settings.setDefaultZoom(ZoomDensity.MEDIUM);
+	        		settings.setSupportZoom(true);
+	        		settings.setLoadWithOverviewMode(true);
+	        		settings.setJavaScriptEnabled(true);
+	        		settings.setSaveFormData(true);
+	        		settings.setSavePassword(true);
+	        		wvLogin.setVisibility(0);
+	        		wvLogin.loadUrl(mUri.toString());
+	        	}
+	    	} catch (Exception e) {
+	    		Log.e("new mLoginAction", e.toString());
+	    	}
+	    }
+	};
+
+	public void hide()
     {
     	try {
     	    FragmentTransaction ft = getFragmentManager().beginTransaction();
