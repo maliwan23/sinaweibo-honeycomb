@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Semaphore;
 
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
-import weibo4andriod.WeiboException;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -33,7 +31,6 @@ public class WeiboAtPage extends Fragment {
     private List<String> profileImageUrlList;
     private List<String> middleImageUrlList;
     
-    private Semaphore sem_mentions;
     private Weibo weibo;
     private static final String TAG="Weibo";
     
@@ -80,22 +77,6 @@ public class WeiboAtPage extends Fragment {
         }
     }
     
-    class GetMentionsThread extends Thread {
-
-        public void run(){
-            try {
-            mentions = weibo.getMentions();
-                        
-            } catch (WeiboException e){
-                e.printStackTrace();
-            } catch (Exception e){
-                e.printStackTrace();
-            } finally {
-                sem_mentions.release();
-            }
-        }
-    }
-
     public void show()
     {
         try {

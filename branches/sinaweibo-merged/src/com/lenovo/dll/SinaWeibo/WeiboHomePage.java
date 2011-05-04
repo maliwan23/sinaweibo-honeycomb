@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Semaphore;
 
 import weibo4andriod.Status;
 import weibo4andriod.Weibo;
-import weibo4andriod.WeiboException;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -33,7 +31,6 @@ public class WeiboHomePage extends Fragment {
     private List<String> profileImageUrlList;
     private List<String> middleImageUrlList;
 
-    private Semaphore sem_timeline;
     private Weibo weibo;
     private static final String TAG= "Weibo";
     private static final String TAG_PIC = "WeiboPic";
@@ -45,24 +42,7 @@ public class WeiboHomePage extends Fragment {
     TimerTask mTimerTask;
     UpdateTask mUpdateTask = new UpdateTask();
         
-    class GetTimelineThread extends Thread {
-        
-        
-        public void run(){
-            try {
 
-            friendsTimeline = weibo.getFriendsTimeline();
-                        
-            } catch (WeiboException e){
-                e.printStackTrace();
-            } catch (Exception e){
-                e.printStackTrace();
-            } finally {
-                sem_timeline.release();
-            }
-        }
-    }
-    
     private void getListData(){
 
         StringBuilder stringBuilder = new StringBuilder("1");
