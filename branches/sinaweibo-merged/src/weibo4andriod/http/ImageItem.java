@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-//import org.apache.commons.fileupload.FileItem;
 
 /**
  * a tools about images

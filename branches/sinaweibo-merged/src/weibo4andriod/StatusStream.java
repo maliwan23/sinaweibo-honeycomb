@@ -26,13 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod;
 
-import weibo4andriod.http.Response;
-import weibo4andriod.org.json.JSONException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import weibo4andriod.http.Response;
+import weibo4andriod.org.json.JSONException;
 
 /**
  *

@@ -26,18 +26,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod;
 
-import org.w3c.dom.Element;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import weibo4andriod.http.Response;
 import weibo4andriod.org.json.JSONArray;
 import weibo4andriod.org.json.JSONException;
 import weibo4andriod.org.json.JSONObject;
-
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * A data class representing one single retweet details.

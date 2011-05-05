@@ -26,10 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod;
 
-import weibo4andriod.http.PostParameter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import weibo4andriod.http.PostParameter;
 
 /**
  * A data class represents search query.

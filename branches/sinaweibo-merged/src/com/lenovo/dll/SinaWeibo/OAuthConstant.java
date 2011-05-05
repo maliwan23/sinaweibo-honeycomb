@@ -1,11 +1,11 @@
 package com.lenovo.dll.SinaWeibo;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import weibo4andriod.Weibo;
 import weibo4andriod.http.AccessToken;
 import weibo4andriod.http.RequestToken;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 public class OAuthConstant {
     

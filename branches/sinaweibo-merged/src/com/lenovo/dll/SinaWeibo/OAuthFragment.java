@@ -1,17 +1,14 @@
 package com.lenovo.dll.SinaWeibo;
 
-//package weibo4andriod.andriodexamples;
-
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
 import weibo4andriod.http.RequestToken;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
+import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,23 +20,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class OAuthFragment extends Fragment {
-    
-    static final String TAG = "Handler";
-    static final int HANDLER_TEST = 1;
+
 
     private View mView = null;
     private Uri mUri;
-    
-    Handler h = new Handler(){
-        public void handleMessage (Message msg)
-        {
-            switch(msg.what)
-            {
-            case HANDLER_TEST:
-                Log.d(TAG, "The handler thread id = " + Thread.currentThread().getId() + "\n");
-            }
-        }
-    };
+    private InitTask mInitTask;
+
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +41,8 @@ public class OAuthFragment extends Fragment {
             public void onClick( View v )
             {
                 v.setEnabled(false);
-                new myThread().start();
+                mInitTask = new InitTask();
+                mInitTask.execute( );
                 v.setVisibility(View.GONE); 
             }
         } );
@@ -63,57 +50,78 @@ public class OAuthFragment extends Fragment {
         return mView;
     }
     
-    class myThread extends Thread
+    protected class InitTask extends AsyncTask<Context, Integer, Boolean>
     {
-        public void run()
+        @Override
+        protected Boolean doInBackground( Context... params ) 
         {
-            Message msg = new Message();
-            msg.what = HANDLER_TEST;
-            
             Weibo weibo = OAuthConstant.getInstance().init();
             RequestToken requestToken;
             try {
                 requestToken = weibo.getOAuthRequestToken("weibo4andriod://OAuthActivity");
                 mUri = Uri.parse(requestToken.getAuthenticationURL()+ "&from=xweibo");
                 OAuthConstant.getInstance().setRequestToken(requestToken);
-
-                // default action is to launch browser
-                // startActivity(new Intent(Intent.ACTION_VIEW, mUri));
-                OAuthFragment.this.getActivity().runOnUiThread(mLoginAction);
                 
             } catch (WeiboException e) {
                 e.printStackTrace();
                 Toast.makeText(OAuthFragment.this.getActivity(), "Failed to login!", Toast.LENGTH_LONG);
+                return false;
             }
-            
-            h.sendMessage(msg);
-            Log.d(TAG, "The worker thread id = " + Thread.currentThread().getId() + "\n");          
+            return true;
+        }
+        
+        // -- gets called just before thread begins
+        @Override
+        protected void onPreExecute() 
+        {
+                super.onPreExecute();
+                
+        }
+        
+        // -- called from the publish progress 
+        // -- notice that the datatype of the second param gets passed to this method
+        @Override
+        protected void onProgressUpdate(Integer... values) 
+        {
+                super.onProgressUpdate(values);
+
+        }
+        
+        // -- called if the cancel button is pressed
+        @Override
+        protected void onCancelled()
+        {
+                super.onCancelled();
+
+        }
+ 
+        // -- called as soon as doInBackground method completes
+        // -- notice that the third param gets passed to this method
+        @Override
+        protected void onPostExecute( Boolean result ) 
+        {
+                try {
+                    WebView wvLogin = (WebView) OAuthFragment.this.getView().findViewById(R.id.webViewLogin);
+                    if (wvLogin != null) {
+                        WebSettings settings = wvLogin.getSettings();
+                        settings.setBuiltInZoomControls(true);
+                        settings.setDisplayZoomControls(true);
+                        settings.setDefaultZoom(ZoomDensity.MEDIUM);
+                        settings.setSupportZoom(true);
+                        settings.setLoadWithOverviewMode(true);
+                        settings.setJavaScriptEnabled(true);
+                        settings.setSaveFormData(true);
+                        settings.setSavePassword(true);
+                        wvLogin.setVisibility(0);
+                        wvLogin.loadUrl(mUri.toString());
+                    }
+                } catch (Exception e) {
+                    Log.e("new mLoginAction", e.toString());
+                }
         }
     }
     
-    Runnable mLoginAction = new Runnable() {
-        public void run() {
-            try {
-                WebView wvLogin = (WebView) OAuthFragment.this.getView().findViewById(R.id.webViewLogin);
-                if (wvLogin != null) {
-                    WebSettings settings = wvLogin.getSettings();
-                    settings.setBuiltInZoomControls(true);
-                    settings.setDisplayZoomControls(true);
-                    settings.setDefaultZoom(ZoomDensity.MEDIUM);
-                    settings.setSupportZoom(true);
-                    settings.setLoadWithOverviewMode(true);
-                    settings.setJavaScriptEnabled(true);
-                    settings.setSaveFormData(true);
-                    settings.setSavePassword(true);
-                    wvLogin.setVisibility(0);
-                    wvLogin.loadUrl(mUri.toString());
-                }
-            } catch (Exception e) {
-                Log.e("new mLoginAction", e.toString());
-            }
-        }
-    };
-
+   
     public void hide()
     {
         try {

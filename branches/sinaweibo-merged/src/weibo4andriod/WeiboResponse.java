@@ -26,16 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import weibo4andriod.http.HTMLEntity;
-import weibo4andriod.http.Response;
-import weibo4andriod.org.json.JSONException;
-import weibo4andriod.org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -45,6 +35,16 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import weibo4andriod.http.HTMLEntity;
+import weibo4andriod.http.Response;
+import weibo4andriod.org.json.JSONException;
+import weibo4andriod.org.json.JSONObject;
 
 /**
  * Super class of Weibo Response objects.

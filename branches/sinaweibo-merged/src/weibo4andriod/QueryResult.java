@@ -26,13 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import weibo4andriod.http.Response;
 import weibo4andriod.org.json.JSONArray;
 import weibo4andriod.org.json.JSONException;
 import weibo4andriod.org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A data class representing search API response

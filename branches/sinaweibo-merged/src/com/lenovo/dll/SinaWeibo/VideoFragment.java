@@ -2,6 +2,7 @@ package com.lenovo.dll.SinaWeibo;
 
 import java.io.File;
 import java.io.FileOutputStream;
+
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;

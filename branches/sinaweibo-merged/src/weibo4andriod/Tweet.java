@@ -26,10 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod;
 
+import java.util.Date;
+
 import weibo4andriod.org.json.JSONException;
 import weibo4andriod.org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * A data class representing a Tweet in the search response

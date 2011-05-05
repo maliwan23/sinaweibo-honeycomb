@@ -26,11 +26,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod;
 
-import weibo4andriod.http.PostParameter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import weibo4andriod.http.PostParameter;
 
 /**
  * A java reporesentation of the <a href="http://open.t.sina.com.cn/wiki/Streaming-API-Documentation">Weibo Streaming API</a>
