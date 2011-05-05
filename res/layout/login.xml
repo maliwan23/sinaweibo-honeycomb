@@ -4,8 +4,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    
-	<Button android:layout_height="wrap_content" android:text="@string/signin" android:layout_width="wrap_content" android:id="@+id/Button_Load" android:layout_gravity="center"></Button>
-	<Button android:layout_height="wrap_content" android:text="@string/skipit" android:layout_width="wrap_content" android:id="@+id/Button_SkipLogin" android:layout_gravity="center" android:visibility="gone"></Button>
-	<WebView android:id="@+id/webViewLogin" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="invisible"></WebView>
+	<TableLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:stretchColumns="1" android:id="@+id/tableLayout1" android:layout_margin="10dp">
+		<TableRow android:id="@+id/tableRow1" android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<TextView android:text="用户名：" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14px"></TextView>
+			<EditText android:text="" android:id="@+id/txtUserName" android:layout_width="match_parent" android:layout_height="wrap_content"></EditText>
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/tableRow2">
+			<TextView android:text="密　码：" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14px"></TextView>
+			<EditText android:text="" android:id="@+id/txtPassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:password="true"></EditText>
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/tableRow3">
+			<TextView android:text="" android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14px"></TextView>
+			<Button android:text="登　录" android:id="@+id/btnLogin" android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="14px"></Button>
+		</TableRow>
+	</TableLayout>
 </LinearLayout>
