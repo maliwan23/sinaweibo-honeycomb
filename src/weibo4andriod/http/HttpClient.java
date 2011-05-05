@@ -39,7 +39,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.AccessControlException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,12 +51,11 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.PartBase;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 
-import android.os.NetworkOnMainThreadException;
-import android.util.Log;
-
 import weibo4andriod.Configuration;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
+import android.os.NetworkOnMainThreadException;
+import android.util.Log;
 
 /**
  * A utility class to handle HTTP request/response.

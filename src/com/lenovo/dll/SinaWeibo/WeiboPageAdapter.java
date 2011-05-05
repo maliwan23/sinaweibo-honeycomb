@@ -2,6 +2,7 @@ package com.lenovo.dll.SinaWeibo;
 
 import java.util.List;
 import java.util.regex.Pattern;
+
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;

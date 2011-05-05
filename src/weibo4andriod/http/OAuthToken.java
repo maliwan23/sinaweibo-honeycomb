@@ -26,10 +26,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package weibo4andriod.http;
 
-import weibo4andriod.WeiboException;
+import java.io.Serializable;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.io.Serializable;
+
+import weibo4andriod.WeiboException;
 
 abstract class OAuthToken implements Serializable {
 
