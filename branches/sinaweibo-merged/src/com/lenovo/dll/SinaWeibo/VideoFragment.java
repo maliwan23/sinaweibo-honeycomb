@@ -38,7 +38,7 @@ public class VideoFragment extends Fragment {
         try {
             File file = new File(path);
             if (!file.exists()) {
-                Toast.makeText(viewer.getContext(), "Video not exist!", Toast.LENGTH_LONG);
+                Toast.makeText(viewer.getContext(), "Video not exist!", Toast.LENGTH_LONG).show();
                 return;
             }
             
