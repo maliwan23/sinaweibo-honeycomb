@@ -77,7 +77,8 @@ public class OAuthFragment extends Fragment {
                 mUri = Uri.parse(requestToken.getAuthenticationURL()+ "&from=xweibo");
                 OAuthConstant.getInstance().setRequestToken(requestToken);
 
-//              startActivity(new Intent(Intent.ACTION_VIEW, mUri));
+                // default action is to launch browser
+                // startActivity(new Intent(Intent.ACTION_VIEW, mUri));
                 OAuthFragment.this.getActivity().runOnUiThread(mLoginAction);
                 
             } catch (WeiboException e) {

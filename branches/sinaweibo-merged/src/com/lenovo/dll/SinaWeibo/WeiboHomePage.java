@@ -140,9 +140,10 @@ public class WeiboHomePage extends Fragment {
                 weibo = OAuthConstant.getInstance().getWeibo();
                 weibo.setToken(OAuthConstant.getInstance().getToken(), OAuthConstant.getInstance().getTokenSecret());
                 
-                friendsTimeline = weibo.getFriendsTimeline();
+            	friendsTimeline = weibo.getFriendsTimeline();
                 
                 getListData();
+                
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
