@@ -42,18 +42,18 @@ public class OAuthFragment extends Fragment {
             {
                 v.setEnabled(false);
                 mInitTask = new InitTask();
-                mInitTask.execute( );
-                v.setVisibility(View.GONE); 
+                mInitTask.execute(v);
+                
             }
         } );
 
         return mView;
     }
     
-    protected class InitTask extends AsyncTask<Context, Integer, Boolean>
+    protected class InitTask extends AsyncTask<View, Boolean, View>
     {
         @Override
-        protected Boolean doInBackground( Context... params ) 
+        protected View doInBackground( View... params ) 
         {
             Weibo weibo = OAuthConstant.getInstance().init();
             RequestToken requestToken;
@@ -65,9 +65,9 @@ public class OAuthFragment extends Fragment {
             } catch (WeiboException e) {
                 e.printStackTrace();
                 Toast.makeText(OAuthFragment.this.getActivity(), "Failed to login!", Toast.LENGTH_LONG);
-                return false;
+            
             }
-            return true;
+            return params[0];
         }
         
         // -- gets called just before thread begins
@@ -81,7 +81,7 @@ public class OAuthFragment extends Fragment {
         // -- called from the publish progress 
         // -- notice that the datatype of the second param gets passed to this method
         @Override
-        protected void onProgressUpdate(Integer... values) 
+        protected void onProgressUpdate(Boolean... values) 
         {
                 super.onProgressUpdate(values);
 
@@ -98,9 +98,10 @@ public class OAuthFragment extends Fragment {
         // -- called as soon as doInBackground method completes
         // -- notice that the third param gets passed to this method
         @Override
-        protected void onPostExecute( Boolean result ) 
+        protected void onPostExecute( View v ) 
         {
                 try {
+                	v.setVisibility(View.GONE); 
                     WebView wvLogin = (WebView) OAuthFragment.this.getView().findViewById(R.id.webViewLogin);
                     if (wvLogin != null) {
                         WebSettings settings = wvLogin.getSettings();
