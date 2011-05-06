@@ -18,7 +18,8 @@
 		        <action android:name="android.intent.action.VIEW" />
 		        <category android:name="android.intent.category.DEFAULT" />
 		        <category android:name="android.intent.category.BROWSABLE" />
-		        <data android:scheme="weibo4andriod" android:host="OAuthActivity" /> 
+		        <data android:scheme="weibo4andriod" android:host="OAuthActivity" />
+		        <data android:scheme="weibo4andriod" android:host="SkipLogin" /> 
 		        <data android:scheme="weibo4andriod" android:host="UpdateHomepage" /> 
 		        <data android:scheme="weibo4andriod" android:host="NewMessage" /> 
 			</intent-filter>

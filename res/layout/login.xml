@@ -17,5 +17,9 @@
 			<TextView android:text="" android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18dp"></TextView>
 			<Button android:text="登　录" android:id="@+id/btnLogin" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18dp"></Button>
 		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/tableRow4">
+			<TextView android:text="" android:id="@+id/textView4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18dp"></TextView>
+			<Button android:text="跳　过" android:id="@+id/btnSkipLogin" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18dp"></Button>
+		</TableRow>
 	</TableLayout>
 </LinearLayout>

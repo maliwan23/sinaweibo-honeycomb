@@ -78,7 +78,7 @@ public class OAuthConstant {
     
     public boolean loadSettings(Context context) {
         try {
-            SharedPreferences settings = context.getSharedPreferences("SinaWeibo", 0);
+            SharedPreferences settings = context.getApplicationContext().getSharedPreferences("SinaWeibo", Context.MODE_WORLD_READABLE);
             token = settings.getString("token", "");
             tokenSecret = settings.getString("tokenSecret", "");
             return (!token.isEmpty() && !tokenSecret.isEmpty());
@@ -90,7 +90,7 @@ public class OAuthConstant {
     
     public boolean saveSettings(Context context) {
         try {
-            SharedPreferences settings = context.getSharedPreferences("SinaWeibo", 0);
+            SharedPreferences settings = context.getApplicationContext().getSharedPreferences("SinaWeibo", Context.MODE_WORLD_READABLE);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("token", token);
             editor.putString("tokenSecret", tokenSecret);

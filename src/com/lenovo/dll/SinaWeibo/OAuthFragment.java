@@ -59,6 +59,7 @@ public class OAuthFragment extends Fragment {
                 mUserName = txtUserName.getText().toString();
                 if (mUserName.length() == 0)
                 {
+                	txtUserName.requestFocus();
                     Toast.makeText(v.getContext(), "Please input your user name!", Toast.LENGTH_LONG).show();
                     return;
                 } 
@@ -67,6 +68,7 @@ public class OAuthFragment extends Fragment {
                 mPassword = txtPassword.getText().toString();
                 if (mPassword.length() == 0)
                 {
+                	txtPassword.requestFocus();
                     Toast.makeText(v.getContext(), "Please input your password!", Toast.LENGTH_LONG).show();
                     return;
                 } 
@@ -75,6 +77,21 @@ public class OAuthFragment extends Fragment {
                 mInitTask.execute();
             }
         } );
+        
+        Button btnSkipLogin = (Button) mView.findViewById(R.id.btnSkipLogin);
+        btnSkipLogin.setOnClickListener(new Button.OnClickListener()
+        {
+
+			@Override
+			public void onClick(View v) {
+				if (OAuthConstant.getInstance().loadSettings(OAuthFragment.this.getActivity())) {
+					setEnabled(false);
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("weibo4andriod://SkipLogin")));
+	        	} else {
+	                Toast.makeText(getActivity(), "Sorry, can't skip for the first time!", Toast.LENGTH_LONG).show();
+	        	}
+			}
+        });
 
         return mView;
     }
@@ -188,6 +205,11 @@ public class OAuthFragment extends Fragment {
         View btnLogin = mView.findViewById(R.id.btnLogin);
         if (btnLogin != null) {
         	btnLogin.setEnabled(enabled);
+        }
+        
+        View btnSkipLogin = mView.findViewById(R.id.btnSkipLogin);
+        if (btnSkipLogin != null) {
+        	btnSkipLogin.setEnabled(enabled);
         }
     }
     

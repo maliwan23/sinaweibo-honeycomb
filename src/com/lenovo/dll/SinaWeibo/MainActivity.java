@@ -1,14 +1,12 @@
 package com.lenovo.dll.SinaWeibo;
 
 import java.net.URL;
-
 import weibo4andriod.User;
 import weibo4andriod.Weibo;
 import weibo4andriod.WeiboException;
 import weibo4andriod.http.AccessToken;
 import weibo4andriod.http.RequestToken;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
@@ -109,6 +108,9 @@ public class MainActivity extends Activity implements OnTouchListener,
 			if (scheme.matches("weibo4andriod")) {
 				if (host.matches("OAuthActivity")) {
 					postLogin(uri);
+					// video.resumeVideo();
+				} else if (host.matches("SkipLogin")) {
+					skipLogin();
 					// video.resumeVideo();
 				} else if (host.matches("UpdateHomepage")) {
 					// RadioGroup rg = (RadioGroup)
@@ -301,20 +303,31 @@ public class MainActivity extends Activity implements OnTouchListener,
 	private Uri uri;
 	protected InitTask mInitTask;
 
-	protected class InitTask extends AsyncTask<Context, Integer, Boolean> {
+	protected class InitTask extends AsyncTask<Boolean, Integer, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Context... params) {
+		// params[0]: true - normal login; false - skip login
+		protected Boolean doInBackground(Boolean... params) {
 
 			try {
-				requestToken = OAuthConstant.getInstance().getRequestToken();
-				accessToken = requestToken.getAccessToken(uri
-						.getQueryParameter("oauth_verifier"));
-				OAuthConstant.getInstance().setAccessToken(accessToken);
+				if (params != null && params.length > 0 && !params[0]) {
+					OAuthConstant.getInstance().init();
+					if (!OAuthConstant.getInstance().loadSettings(MainActivity.this)) {
+						Toast.makeText(MainActivity.this, "Failed to skip login!", Toast.LENGTH_LONG).show();
+						return false;
+					}
+				} else {
+					requestToken = OAuthConstant.getInstance().getRequestToken();
+					accessToken = requestToken.getAccessToken(uri
+							.getQueryParameter("oauth_verifier"));
+					OAuthConstant.getInstance().setAccessToken(accessToken);
+					OAuthConstant.getInstance().saveSettings(MainActivity.this);
+				}
 
 				Weibo weibo = OAuthConstant.getInstance().getWeibo();
 				weibo.setToken(OAuthConstant.getInstance().getToken(),
 						OAuthConstant.getInstance().getTokenSecret());
+
 				user = weibo.verifyCredentials();
 
 			} catch (WeiboException e) {
@@ -435,7 +448,14 @@ public class MainActivity extends Activity implements OnTouchListener,
 	private void postLogin(Uri uri) {
 
 		mInitTask = new InitTask();
-		mInitTask.execute(this);
+		mInitTask.execute(true);
+
+	}
+
+	private void skipLogin() {
+
+		mInitTask = new InitTask();
+		mInitTask.execute(false);
 
 	}
 }
